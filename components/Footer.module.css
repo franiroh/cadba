@@ -1,0 +1,74 @@
+.footer {
+  background-color: var(--accent-primary);
+  color: var(--foreground-inverse);
+  padding: 32px 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+.infoBlock {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.infoBlockCenter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.textStack {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoStackRight {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  color: #FFFFFF;
+}
+
+.textBold {
+  font-size: 16px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.textNormal {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 1024px) {
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px;
+    gap: 32px;
+  }
+}
