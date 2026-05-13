@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   background-color: var(--surface-secondary); /* #F9FAFB equivalent */
-  min-height: calc(100vh - 140px); /* Fill screen minus navbar */
+  flex: 1;
 }
 
 .content {
@@ -10,8 +10,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 120px;
-  height: 600px;
+  padding: 100px 24px;
   text-align: center;
   gap: 24px;
 }
@@ -65,8 +64,6 @@
 @media (max-width: 768px) {
   .content {
     padding: 60px 24px;
-    height: auto;
-    min-height: 500px;
   }
   .title {
     font-size: 36px;
