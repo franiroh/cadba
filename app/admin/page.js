@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/client';
 import { updateContent } from '@/app/actions';
 import styles from './page.module.css';
 import { Save, Image as ImageIcon, Layout, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Admin() {
+  const supabase = createClient();
   const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(null); // id of item being saved

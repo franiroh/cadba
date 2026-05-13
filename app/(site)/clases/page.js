@@ -1,8 +1,9 @@
 import { Calendar, MessageSquare } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/server';
 import styles from './page.module.css';
 
 async function getSiteContent(page) {
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('site_content')
     .select('section, key, content')

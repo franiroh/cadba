@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
@@ -13,22 +13,31 @@ export default function Login() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
+  const supabase = createClient();
+
   async function handleLogin(e) {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      setError('Credenciales incorrectas. Por favor, verificá tu email y contraseña.');
+      if (error) {
+        setError('Credenciales incorrectas. Por favor, verificá tu email y contraseña.');
+        setLoading(false);
+      } else {
+        // Usamos window.location.href para asegurar que el middleware 
+        // detecte la sesión correctamente en la recarga
+        window.location.href = '/admin';
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Ocurrió un error inesperado. Reintentá en unos momentos.');
       setLoading(false);
-    } else {
-      router.push('/admin');
-      router.refresh();
     }
   }
 

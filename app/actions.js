@@ -1,9 +1,10 @@
 "use server";
 
 import { revalidatePath } from 'next/cache';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/server';
 
 export async function updateContent(id, newContent) {
+  const supabase = await createClient();
   const { error } = await supabase
     .from('site_content')
     .update({ content: newContent, updated_at: new Date() })
@@ -20,6 +21,7 @@ export async function updateContent(id, newContent) {
 }
 
 export async function uploadImage(formData) {
+  const supabase = await createClient();
   const file = formData.get('file');
   const path = formData.get('path'); // e.g. "home/hero/bg.png"
   
