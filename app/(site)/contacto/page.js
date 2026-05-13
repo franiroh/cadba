@@ -2,9 +2,10 @@ import { getSiteContent } from '@/utils/cms';
 import ContactForm from './ContactForm';
 import styles from './page.module.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Contacto() {
   const content = await getSiteContent('contacto');
-  const generalContent = await getSiteContent('general');
 
   return (
     <div className={styles.container}>
@@ -28,7 +29,7 @@ export default async function Contacto() {
         </div>
 
         <div className={styles.formCol}>
-          <ContactForm destinationEmail={generalContent.config?.contact_email} />
+          <ContactForm destinationEmail={content.general?.contact_email} />
         </div>
       </section>
     </div>
