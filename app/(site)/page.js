@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import { ArrowRight, MapPin, Clock, Phone, Gift, User, Mail, MessageSquare } from 'lucide-react';
 import { getSiteContent } from '@/utils/cms.js';
+import HeroForm from '@/components/HeroForm';
 import styles from './page.module.css';
+
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const content = await getSiteContent('home');
+  const contactContent = await getSiteContent('contacto');
 
   return (
     <div className={styles.container}>
@@ -43,23 +47,7 @@ export default async function Home() {
               <div className={styles.formBar}></div>
               <h3 className={styles.formTitle}>Consultanos por tu clase</h3>
             </div>
-            <form className={styles.heroForm}>
-              <div className={styles.inputWrap}>
-                <User size={18} className={styles.inputIcon} />
-                <input type="text" placeholder="Nombre" className={styles.inputField} />
-              </div>
-              <div className={styles.inputWrap}>
-                <Mail size={18} className={styles.inputIcon} />
-                <input type="email" placeholder="Email" className={styles.inputField} />
-              </div>
-              <div className={styles.inputWrap}>
-                <MessageSquare size={18} className={styles.inputIcon} />
-                <textarea placeholder="Mensaje" className={styles.inputField} rows={3}></textarea>
-              </div>
-              <button type="submit" className={styles.submitBtn}>
-                Enviar consulta <ArrowRight size={16} />
-              </button>
-            </form>
+            <HeroForm destinationEmail={contactContent.general?.contact_email} styles={styles} />
           </div>
 
         </div>
