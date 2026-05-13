@@ -149,6 +149,9 @@ export default function Admin() {
     'marketing/custom/head_scripts': 'Scripts Personalizados (Head)',
     'marketing/custom/body_scripts': 'Scripts Personalizados (Body)',
     
+    // Configuración General (Dentro de Contacto)
+    'contacto/general/contact_email': 'Email de Recepción de Formularios',
+    
     // Navbar
     'navbar/btn_text': 'Botón Menú (Texto)',
     'navbar/btn_url': 'Botón Menú (Link)',
@@ -175,7 +178,7 @@ export default function Admin() {
     'custom': 'Scripts Personalizados'
   };
 
-  const sectionOrder = ['navbar', 'whatsapp', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'footer'];
+  const sectionOrder = ['general', 'navbar', 'whatsapp', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'gracias', 'custom', 'footer'];
 
   const keyOrder = [
     'title_top', 'title_accent', 'title_bottom', 'title', 'subtitle', 'image',
@@ -186,7 +189,7 @@ export default function Admin() {
     'label_location', 'location', 'label_hours', 'hours', 'label_phone', 'phone', 'email',
     'primary_btn', 'primary_url', 'secondary_btn', 'secondary_url', 
     'text', 'details', 'btn_text', 'btn_url',
-    'ga_id', 'gtm_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
+    'contact_email', 'ga_id', 'gtm_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
   ];
 
   if (loading) return <div className={styles.loading}><Loader2 className={styles.spin} /> Cargando panel...</div>;

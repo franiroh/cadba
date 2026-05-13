@@ -4,6 +4,7 @@ import styles from './page.module.css';
 
 export default async function Contacto() {
   const content = await getSiteContent('contacto');
+  const generalContent = await getSiteContent('general');
 
   return (
     <div className={styles.container}>
@@ -27,7 +28,7 @@ export default async function Contacto() {
         </div>
 
         <div className={styles.formCol}>
-          <ContactForm />
+          <ContactForm destinationEmail={generalContent.config?.contact_email} />
         </div>
       </section>
     </div>
