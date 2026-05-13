@@ -34,9 +34,9 @@ export default async function Clases() {
             <ul className={styles.sectionList}>
               {renderDetails(content.iniciacion?.details)}
             </ul>
-            <button className={styles.btnSecondary}>
+            <a href={content.iniciacion?.btn_url} className={styles.btnSecondary} target="_blank" rel="noopener noreferrer">
               {content.iniciacion?.btn_text || 'Reservá tu primer clase'} <Calendar size={18} />
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -52,9 +52,9 @@ export default async function Clases() {
             <ul className={styles.sectionList}>
               {renderDetails(content.practica?.details)}
             </ul>
-            <button className={styles.btnSecondary}>
+            <a href={content.practica?.btn_url} className={styles.btnSecondary} target="_blank" rel="noopener noreferrer">
               {content.practica?.btn_text || 'Consultar cupos'} <MessageSquare size={18} />
-            </button>
+            </a>
           </div>
           <div className={styles.imgCol} style={{backgroundImage: `url('${content.practica?.image || '/images/generated-1777765463392.png'}')`}}></div>
         </div>
@@ -72,9 +72,9 @@ export default async function Clases() {
             <ul className={styles.sectionList}>
               {renderDetails(content.gift?.details)}
             </ul>
-            <button className={styles.btnSecondary}>
+            <a href={content.gift?.btn_url} className={styles.btnSecondary} target="_blank" rel="noopener noreferrer">
               {content.gift?.btn_text || 'Consultar por Gift Card'}
-            </button>
+            </a>
           </div>
         </div>
       </section>

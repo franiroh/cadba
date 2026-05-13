@@ -64,12 +64,16 @@ export default function Admin() {
 
   const keyLabels = {
     // Hero
-    'hero/title': 'Frase Principal (Hero)',
+    'hero/title_top': 'Frase Superior (Hero)',
+    'hero/title_accent': 'Frase Destacada en Violeta (Hero)',
+    'hero/title_bottom': 'Frase Inferior (Hero)',
     'hero/subtitle': 'Texto secundario (Hero)',
     'hero/image': 'Imagen de fondo (Hero)',
     'hero/location': 'Texto de Ubicación (Hero)',
     'hero/primary_btn': 'Texto Botón Reservar',
+    'hero/primary_url': 'Link Botón Reservar',
     'hero/secondary_btn': 'Texto Botón Regalar',
+    'hero/secondary_url': 'Link Botón Regalar',
     
     // Clases Page
     'clases/hero/title': 'Título Hero (Clases)',
@@ -80,16 +84,19 @@ export default function Admin() {
     'clases/iniciacion/details': 'Lista de Detalles (Iniciación)',
     'clases/iniciacion/image': 'Foto: Iniciación',
     'clases/iniciacion/btn_text': 'Texto Botón (Iniciación)',
+    'clases/iniciacion/btn_url': 'Link Botón (Iniciación)',
     'clases/practica/title': 'Título: Práctica',
     'clases/practica/text': 'Descripción: Práctica',
     'clases/practica/details': 'Lista de Detalles (Práctica)',
     'clases/practica/image': 'Foto: Práctica',
     'clases/practica/btn_text': 'Texto Botón (Práctica)',
+    'clases/practica/btn_url': 'Link Botón (Práctica)',
     'clases/gift/title': 'Título: Gift Card',
     'clases/gift/text': 'Descripción: Gift Card',
     'clases/gift/details': 'Lista de Detalles (Gift Card)',
     'clases/gift/image': 'Foto: Gift Card',
     'clases/gift/btn_text': 'Texto Botón (Gift Card)',
+    'clases/gift/btn_url': 'Link Botón (Gift Card)',
     
     // Estilos (Home)
     'estilos/title': 'Título de la sección Estilos',
@@ -130,9 +137,14 @@ export default function Admin() {
     'contacto/info/email': 'Email mostrado',
     'contacto/info/location': 'Ubicación mostrada',
     'contacto/info/phone': 'Teléfono mostrado',
+    
+    // Navbar
+    'navbar/btn_text': 'Botón Menú (Texto)',
+    'navbar/btn_url': 'Botón Menú (Link)',
   };
 
   const sectionLabels = {
+    'navbar': '0. Navegación (Global)',
     'hero': '1. Portada / Hero',
     'iniciacion': '2. Iniciación',
     'practica': '3. Práctica Regular',
@@ -143,7 +155,18 @@ export default function Admin() {
     'footer': 'Pie de Página (Footer)'
   };
 
-  const sectionOrder = ['hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'footer'];
+  const sectionOrder = ['navbar', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'footer'];
+
+  const keyOrder = [
+    'title_top', 'title_accent', 'title_bottom', 'title', 'subtitle', 'image',
+    'tradicional_title', 'tradicional_desc', 'tradicional_image',
+    'recurvo_title', 'recurvo_desc', 'recurvo_image',
+    'compuesto_title', 'compuesto_desc', 'compuesto_image',
+    'raso_title', 'raso_desc', 'raso_image',
+    'label_location', 'location', 'label_hours', 'hours', 'label_phone', 'phone', 'email',
+    'primary_btn', 'primary_url', 'secondary_btn', 'secondary_url', 
+    'text', 'details', 'btn_text', 'btn_url'
+  ];
 
   if (loading) return <div className={styles.loading}><Loader2 className={styles.spin} /> Cargando panel...</div>;
 
@@ -158,6 +181,18 @@ export default function Admin() {
       if (indexB === -1) return -1;
       return indexA - indexB;
     });
+
+  // Function to sort keys within a section
+  const sortItems = (items) => {
+    return [...items].sort((a, b) => {
+      const indexA = keyOrder.indexOf(a.key);
+      const indexB = keyOrder.indexOf(b.key);
+      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      return a.key.localeCompare(b.key);
+    });
+  };
 
   return (
     <div className={styles.adminContainer}>
@@ -213,8 +248,8 @@ export default function Admin() {
                 </div>
                 
                 <div className={styles.contentGrid}>
-                  {filteredContent.filter(item => item.section === section).map(item => (
-                    <div key={item.id} className={styles.card}>
+                  {sortItems(filteredContent.filter(item => item.section === section)).map(item => (
+                    <div key={item.id} className={`${styles.card} ${item.key.startsWith('title_') ? styles.fullWidth : ''}`}>
                       <div className={styles.cardHeader}>
                         <div className={styles.labelGroup}>
                           <span className={styles.fieldLabel}>{keyLabels[`${item.section}/${item.key}`] || keyLabels[item.key] || 'Campo'}</span>

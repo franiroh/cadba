@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from './Navbar.module.css';
 
-export default function Navbar() {
+export default function Navbar({ content }) {
   return (
     <nav className={styles.navbar}>
       <div className={styles.logoContainer}>
@@ -12,7 +12,9 @@ export default function Navbar() {
       <div className={styles.links}>
         <Link href="/" className={styles.link}>Inicio</Link>
         <Link href="/clases" className={styles.link}>Clases</Link>
-        <Link href="/contacto" className={styles.button}>Reservá tu clase</Link>
+        <Link href={content?.btn_url || '/contacto'} className={styles.button}>
+          {content?.btn_text || 'Reservá tu clase'}
+        </Link>
       </div>
     </nav>
   );

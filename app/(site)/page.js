@@ -16,9 +16,9 @@ export default async function Home() {
           <div className={styles.heroLeft}>
             <div className={styles.heroTitleWrap}>
               <h1 className={styles.mainTitle}>
-                {content.hero?.title?.split('clase de arquería')[0]}
-                <span className={styles.textAccent}>clase de arquería</span>
-                {content.hero?.title?.split('clase de arquería')[1]}
+                <div className={styles.titleLine}>{content.hero?.title_top}</div>
+                <div className={`${styles.titleLine} ${styles.textAccent}`}>{content.hero?.title_accent}</div>
+                <div className={styles.titleLine}>{content.hero?.title_bottom}</div>
               </h1>
             </div>
             <p className={styles.heroText}>
@@ -29,12 +29,12 @@ export default async function Home() {
               <span className={styles.locationText}>{content.hero?.location}</span>
             </div>
             <div className={styles.heroBtns}>
-              <Link href="/clases" className={styles.btnPrimary}>
+              <Link href={content.hero?.primary_url || '/clases'} className={styles.btnPrimary}>
                 {content.hero?.primary_btn} <ArrowRight size={18} />
               </Link>
-              <button className={styles.btnOutline}>
+              <Link href={content.hero?.secondary_url || '/clases#regala'} className={styles.btnOutline}>
                 <Gift size={18} /> {content.hero?.secondary_btn}
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -93,9 +93,9 @@ export default async function Home() {
                   <li>• Edad mínima: 12 años</li>
                   <li>• Incluye: Equipo e instrucción</li>
                 </ul>
-                <button className={styles.btnSecondary}>
+                <Link href={content.clases?.card_url || '/clases'} className={styles.btnSecondary}>
                   Reservá tu primer clase <ArrowRight size={16} />
-                </button>
+                </Link>
               </div>
             </div>
             
@@ -115,7 +115,9 @@ export default async function Home() {
                   {content.clases?.gift_text}
                 </p>
               </div>
-              <button className={styles.btnSecondary}>Más información</button>
+              <Link href={content.clases?.gift_url || '/clases#regala'} className={styles.btnSecondary}>
+                Más información
+              </Link>
             </div>
           </div>
         </div>

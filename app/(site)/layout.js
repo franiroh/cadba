@@ -8,7 +8,7 @@ export default async function SiteLayout({ children }) {
   
   return (
     <>
-      <Navbar />
+      <Navbar content={content.navbar} />
       <main style={{ minHeight: 'calc(100vh - 140px - 200px)' }}>
         {children}
       </main>

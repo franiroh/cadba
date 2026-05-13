@@ -6,7 +6,7 @@
 }
 
 .sidebar {
-  width: 280px;
+  width: 240px;
   background-color: #ffffff;
   border-right: 1px solid #e2e8f0;
   display: flex;
@@ -101,7 +101,7 @@
 
 .mainWrapper {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 240px;
   display: flex;
   flex-direction: column;
 }
@@ -109,7 +109,7 @@
 .header {
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
-  padding: 20px 40px;
+  padding: 12px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -147,7 +147,7 @@
 }
 
 .content {
-  padding: 40px;
+  padding: 24px 40px;
 }
 
 .pageSection {
@@ -172,32 +172,47 @@
 }
 
 .contentGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background-color: #e2e8f0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
 }
 
 .card {
   background-color: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
   display: flex;
-  flex-direction: column;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  overflow: hidden;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 80px;
+}
+
+.fullWidth {
+  /* No longer needed in list view, but keeping for compatibility */
 }
 
 .cardHeader {
+  width: 300px;
   padding: 16px 20px;
-  background-color: #fcfcfd;
-  border-bottom: 1px solid #f1f5f9;
+  background-color: #f8fafc;
+  border-right: 1px solid #e2e8f0;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .cardBody {
-  padding: 20px;
+  flex: 1;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
 }
 
 .labelGroup {
@@ -221,16 +236,16 @@
 
 .textarea {
   width: 100%;
-  min-height: 120px;
-  padding: 16px;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   resize: vertical;
-  line-height: 1.6;
+  line-height: 1.4;
   transition: all 0.2s;
-  background-color: #f8fafc;
+  background-color: #ffffff;
 }
 
 .textarea:focus {
@@ -242,18 +257,19 @@
 
 .imageEdit {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
 }
 
 .previewContainer {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  border-radius: 12px;
+  width: 80px;
+  height: 60px;
+  border-radius: 6px;
   overflow: hidden;
-  background-color: #f1f5f9;
-  border: 1.5px solid #e2e8f0;
+  border: 1px solid #e2e8f0;
+  flex-shrink: 0;
 }
 
 .previewImg {
@@ -264,7 +280,7 @@
 }
 
 .imageMeta {
-  margin-top: 12px;
+  margin-top: 0;
 }
 
 .dimensionBadge {
@@ -281,19 +297,16 @@
 .uploadBtn {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  width: 100%;
-  padding: 12px;
+  padding: 8px 16px;
   background-color: #ffffff;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 0.9rem;
-  color: #475569;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 12px;
 }
 
 .uploadBtn:hover {
@@ -303,18 +316,7 @@
 }
 
 .imageInfo {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 8px 12px;
-  background: rgba(15, 23, 42, 0.7);
-  color: white;
-  font-size: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  backdrop-filter: blur(4px);
+  display: none; /* Hide in compact view */
 }
 
 .hiddenInput {

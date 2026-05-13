@@ -44,8 +44,14 @@
 .mainTitle {
   font-size: 48px;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.2;
   color: var(--foreground-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.titleLine {
+  display: block;
 }
 
 .textAccent {
