@@ -1,0 +1,1459 @@
+{
+  "version": "2.11",
+  "children": [
+    {
+      "type": "frame",
+      "id": "NFD9b",
+      "x": 0,
+      "y": 0,
+      "name": "landingPage",
+      "width": 1440,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "nz35u",
+          "name": "navContainer",
+          "width": "fill_container",
+          "height": 140,
+          "fill": "#FFFFFF",
+          "padding": [
+            0,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "NA6Ns",
+              "name": "logoBox",
+              "width": 360,
+              "height": 120,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/logo.png",
+                "mode": "fit"
+              }
+            },
+            {
+              "type": "frame",
+              "id": "TlJut",
+              "name": "navLinks",
+              "gap": 40,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "OKGau",
+                  "fill": "$foreground_primary",
+                  "content": "Clases",
+                  "fontFamily": "$headings",
+                  "fontSize": 28,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "TwmZ8",
+                  "fill": "$foreground_primary",
+                  "content": "Ubicación",
+                  "fontFamily": "$headings",
+                  "fontSize": 28,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "X3obsx",
+                  "fill": "$foreground_primary",
+                  "content": "Contacto",
+                  "fontFamily": "$headings",
+                  "fontSize": 28,
+                  "fontWeight": "bold"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QMvu8",
+              "name": "navBtn",
+              "fill": "$accent",
+              "cornerRadius": 12,
+              "gap": 8,
+              "padding": [
+                16,
+                32
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "YJBXk",
+                  "fill": "$foreground_inverse",
+                  "content": "Reservá tu clase",
+                  "fontFamily": "$headings",
+                  "fontSize": 16,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "a9pmn",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "arrow-right",
+                  "iconFontFamily": "lucide",
+                  "fill": "$foreground_inverse"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "hy8gV",
+          "name": "heroSec",
+          "width": "fill_container",
+          "height": 500,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "images/generated-1777763987465.png",
+            "mode": "fill"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "MQgwx",
+              "x": 0,
+              "y": 0,
+              "name": "heroOverlay",
+              "width": 1440,
+              "height": 500,
+              "fill": {
+                "type": "gradient",
+                "gradientType": "linear",
+                "enabled": true,
+                "rotation": 270,
+                "size": {
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#FFFFFFFF",
+                    "position": 0
+                  },
+                  {
+                    "color": "#FFFFFFCC",
+                    "position": 0.5
+                  },
+                  {
+                    "color": "#FFFFFF00",
+                    "position": 1
+                  }
+                ]
+              }
+            },
+            {
+              "type": "frame",
+              "id": "Ub41E",
+              "x": 0,
+              "y": 0,
+              "name": "heroContentWrap",
+              "width": 1440,
+              "height": 500,
+              "padding": [
+                40,
+                120
+              ],
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "zbksZ",
+                  "name": "heroLeft",
+                  "width": 600,
+                  "fill": "#00000000",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "gap": 24,
+                  "padding": 40,
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "x9ddNK",
+                      "name": "heroTitleWrap",
+                      "width": "fit_content(0)",
+                      "height": "fit_content(0)",
+                      "layout": "vertical"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mrDrS",
+                      "fill": "$foreground_secondary",
+                      "textGrowth": "fixed-width",
+                      "width": 500,
+                      "content": "No hace falta experiencia ni equipo. Viví una actividad distinta, con clases de iniciación para principiantes.",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$body",
+                      "fontSize": 18,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "A587rm",
+                      "name": "locBox",
+                      "width": "fit_content(0)",
+                      "height": "fit_content(0)",
+                      "gap": 8,
+                      "alignItems": "center"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Uz3cO",
+                      "name": "heroBtns",
+                      "width": "fit_content(0)",
+                      "height": "fit_content(0)",
+                      "gap": 16
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "s33p9g",
+                  "name": "heroRight",
+                  "width": 400,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000001A",
+                    "offset": {
+                      "x": 0,
+                      "y": 10
+                    },
+                    "blur": 30
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    32,
+                    40
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "dKow2",
+                      "name": "formHeader",
+                      "width": "fill_container",
+                      "height": "fit_content(0)",
+                      "gap": 16,
+                      "alignItems": "center"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pfVxy",
+                      "name": "formInputs",
+                      "width": "fill_container",
+                      "height": "fit_content(0)",
+                      "layout": "vertical",
+                      "gap": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "zhIxB",
+                      "name": "submitBtn",
+                      "width": "fill_container",
+                      "height": "fit_content(0)",
+                      "fill": "$accent_secondary",
+                      "cornerRadius": 4,
+                      "gap": 8,
+                      "padding": [
+                        16,
+                        0
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "oqJnJ",
+          "name": "clasesSec",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            60,
+            120
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "cj1gJ",
+              "name": "clasesHead",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 3,
+                  "id": "o4eUOG",
+                  "name": "bar1",
+                  "fill": "$accent_secondary",
+                  "width": 6,
+                  "height": 48
+                },
+                {
+                  "type": "text",
+                  "id": "wS2Gp",
+                  "fill": "$accent",
+                  "content": "Iniciación y clases para todos los niveles",
+                  "fontFamily": "$headings",
+                  "fontSize": 40,
+                  "fontWeight": "bold"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "S0NlK",
+              "name": "introTxt",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "padding": [
+                0,
+                0,
+                20,
+                0
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "E9jXnn",
+                  "fill": "$accent",
+                  "content": "Tu camino en la arquería",
+                  "fontFamily": "$headings",
+                  "fontSize": 24,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "percY",
+                  "fill": "$foreground_secondary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "En el Club de Arquería de Buenos Aires (CAdBA) creemos que cada arquero tiene un camino único. Por eso, te acompañamos desde tus primeros pasos en la iniciación hasta alcanzar niveles de competición nacional, brindando un ambiente profesional y humano donde podrás desarrollar tu técnica y pasión por este deporte milenario.",
+                  "fontFamily": "$body",
+                  "fontSize": 20,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "awy27",
+              "name": "cardsGrid",
+              "width": "fill_container",
+              "gap": 40,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Op29K",
+                  "name": "iniciacionCard",
+                  "clip": true,
+                  "width": 760,
+                  "height": 480,
+                  "fill": "$surface_secondary",
+                  "cornerRadius": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "yxeFH",
+                      "name": "iniImg",
+                      "width": 360,
+                      "height": 480,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "images/generated-1777764271413.png",
+                        "mode": "fill"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "xkHpe",
+                      "name": "iniCont",
+                      "width": 400,
+                      "height": "fit_content(0)",
+                      "layout": "vertical",
+                      "gap": 24,
+                      "padding": 40,
+                      "justifyContent": "center"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "jwF5p",
+                  "name": "giftCard",
+                  "width": 400,
+                  "height": 480,
+                  "fill": "$accent",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "gap": 40,
+                  "padding": 64,
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "N2oOc",
+                      "name": "txtC",
+                      "width": "fill_container",
+                      "height": "fit_content(0)",
+                      "layout": "vertical",
+                      "gap": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "fxvpx",
+                      "name": "giftBtn",
+                      "width": "fit_content(0)",
+                      "height": "fit_content(0)",
+                      "fill": "$accent_secondary",
+                      "cornerRadius": 12,
+                      "padding": [
+                        16,
+                        32
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uxSOZ",
+          "name": "estilosSec",
+          "width": "fill_container",
+          "fill": "$surface_secondary",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            60,
+            120
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "bgjtU",
+              "name": "estHead",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "HJKa7",
+                  "name": "titleWrap",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 3,
+                      "id": "e1nV88",
+                      "name": "bar2",
+                      "fill": "$accent_secondary",
+                      "width": 6,
+                      "height": 48
+                    },
+                    {
+                      "type": "text",
+                      "id": "DYygP",
+                      "fill": "$accent",
+                      "content": "Descubrí tu estilo de arquería",
+                      "fontFamily": "$headings",
+                      "fontSize": 40,
+                      "fontWeight": "bold"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "naLAQ",
+                  "fill": "$foreground_secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 900,
+                  "content": "En CAdBA, una vez formadas las nociones básicas, podés elegir el estilo de arquería que más te divierta. Cada uno tiene sus particularidades y su propio camino de aprendizaje.",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$body",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "T6i0KL",
+              "name": "newEstWrap",
+              "width": "fill_container",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "oXyKe",
+                  "name": "e1",
+                  "clip": true,
+                  "width": "fill_container",
+                  "height": 480,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000A",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 20
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "dz5v5",
+                      "name": "e1Img",
+                      "width": "fill_container",
+                      "height": 250,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "images/generated-1777764723827.png",
+                        "mode": "fill"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ajLn3",
+                      "name": "e1Txt",
+                      "width": "fill_container",
+                      "height": "fit_content(0)",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 24
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "yajzX",
+                  "name": "e2",
+                  "clip": true,
+                  "width": "fill_container",
+                  "height": 480,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000A",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 20
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "IrgDT",
+                      "name": "e2Img",
+                      "width": "fill_container",
+                      "height": 250,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "images/generated-1777764881194.png",
+                        "mode": "fill"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ljsVq",
+                      "name": "e2Txt",
+                      "width": "fill_container",
+                      "height": "fit_content(0)",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 24
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pfRp9",
+                  "name": "e3",
+                  "clip": true,
+                  "width": "fill_container",
+                  "height": 480,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000A",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 20
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "m6CiQ",
+                      "name": "e3Img",
+                      "width": "fill_container",
+                      "height": 250,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "images/generated-1777764910374.png",
+                        "mode": "fill"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZSkO3",
+                      "name": "e3Txt",
+                      "width": "fill_container",
+                      "height": "fit_content(0)",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 24
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "dwYAv",
+                  "name": "e4",
+                  "clip": true,
+                  "width": "fill_container",
+                  "height": 480,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000A",
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "blur": 20
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "D9uTi",
+                      "name": "e4Img",
+                      "width": "fill_container",
+                      "height": 250,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "images/generated-1777764639003.png",
+                        "mode": "fill"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "WjdlE",
+                      "name": "e4Txt",
+                      "width": "fill_container",
+                      "height": "fit_content(0)",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 24
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ZW97q",
+          "name": "infoSec",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            60,
+            120
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "alZix",
+              "name": "infoHead",
+              "width": "fill_container",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 3,
+                  "id": "PY8Sl",
+                  "fill": "$accent_secondary",
+                  "width": 6,
+                  "height": 48
+                },
+                {
+                  "type": "text",
+                  "id": "EOD6M",
+                  "fill": "$accent",
+                  "content": "Vení a conocernos",
+                  "fontFamily": "$headings",
+                  "fontSize": 40,
+                  "fontWeight": "bold"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "xw6wU",
+              "name": "infoBox",
+              "clip": true,
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#0000000A",
+                "offset": {
+                  "x": 0,
+                  "y": 4
+                },
+                "blur": 20
+              },
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "iXAgf",
+                  "name": "infoRight",
+                  "clip": true,
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "images/generated-1777754324905.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 12,
+                  "layout": "none"
+                },
+                {
+                  "type": "frame",
+                  "id": "c21ri",
+                  "name": "infoLeft",
+                  "width": 480,
+                  "height": "fit_content(0)",
+                  "layout": "vertical",
+                  "gap": 56,
+                  "padding": 60,
+                  "justifyContent": "space_between",
+                  "alignItems": "end"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "vmfV2",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "$accent",
+          "gap": 32,
+          "padding": [
+            32,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "xOj7w",
+              "name": "logoWrap",
+              "width": 320,
+              "height": 100,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/logo-blanco.png",
+                "mode": "fit"
+              }
+            },
+            {
+              "type": "frame",
+              "id": "qe9hM",
+              "name": "contactInfo1",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "oWH8s",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "map-pin",
+                  "iconFontFamily": "lucide",
+                  "fill": "#FFFFFF"
+                },
+                {
+                  "type": "frame",
+                  "id": "ScgQ6",
+                  "name": "c1Txts",
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "AgYLn",
+                      "fill": "#FFFFFF",
+                      "content": "Av. Vélez Sarsfield 268",
+                      "fontFamily": "$headings",
+                      "fontSize": 16,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "L7AH6",
+                      "fill": "#FFFFFFCC",
+                      "content": "Barracas, CABA - Argentina",
+                      "fontFamily": "$body",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "pp2Ry",
+              "name": "contactInfo2",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "PBK2x",
+                  "name": "ci2Row2",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "QJ4lv",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "instagram",
+                      "iconFontFamily": "lucide",
+                      "fill": "#FFFFFF"
+                    },
+                    {
+                      "type": "text",
+                      "id": "vhkgM",
+                      "fill": "#FFFFFF",
+                      "content": "@clubdearqueria.ba",
+                      "fontFamily": "$body",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "g0uyDY",
+              "name": "contactInfo3",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "H9mU6",
+                  "name": "ci3Row1",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "h8xD2S",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "phone",
+                      "iconFontFamily": "lucide",
+                      "fill": "#FFFFFF"
+                    },
+                    {
+                      "type": "text",
+                      "id": "CzfMn",
+                      "fill": "#FFFFFF",
+                      "content": "+54 9 11 6232-9424",
+                      "fontFamily": "$headings",
+                      "fontSize": 16,
+                      "fontWeight": "bold"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "nFDPm",
+                  "name": "ci3Row2",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jW0mE",
+                      "fill": "#FFFFFFCC",
+                      "content": "Lunes a Sábado de 10 a 22 hs.",
+                      "fontFamily": "$body",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Qua4X",
+      "x": 1638,
+      "y": 0,
+      "name": "Página Clases",
+      "width": 1440,
+      "height": 2000,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "dFAIk",
+          "name": "nav",
+          "width": "fill_container",
+          "height": 140,
+          "fill": "#FFFFFF",
+          "padding": [
+            0,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "tZDpb",
+              "name": "logo",
+              "width": 300,
+              "height": 100,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/logo.png",
+                "mode": "fit"
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "N92Tu",
+          "name": "cHero",
+          "width": "fill_container",
+          "height": 400,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "images/generated-1777765081476.png",
+            "mode": "fill"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "UMgwP",
+              "x": 0,
+              "y": 0,
+              "name": "heroOverlay",
+              "width": "fill_container(0)",
+              "layout": "vertical",
+              "gap": 16,
+              "padding": [
+                80,
+                120
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "fgieY",
+                  "fill": "#FFFFFF",
+                  "content": "Clases de Arquería",
+                  "fontFamily": "$headings",
+                  "fontSize": 48,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "B1ODa",
+                  "fill": "#FFFFFFCC",
+                  "content": "Aprendé con los mejores profesores en un ambiente seguro y divertido.",
+                  "fontFamily": "$body",
+                  "fontSize": 24,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "I3OM9Y",
+          "name": "s1",
+          "width": "fill_container",
+          "gap": 80,
+          "padding": [
+            80,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "PKoor",
+              "name": "s1Img",
+              "width": 500,
+              "height": 400,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/generated-1777764271413.png",
+                "mode": "fill"
+              }
+            },
+            {
+              "type": "frame",
+              "id": "yJZ5D",
+              "name": "s1Txt",
+              "width": 500,
+              "layout": "vertical",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "NK3Dr",
+                  "fill": "$accent",
+                  "content": "Iniciación",
+                  "fontFamily": "$headings",
+                  "fontSize": 32,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "IyCkW",
+                  "fill": "$foreground_secondary",
+                  "content": "Tu primer paso en la arquería. No necesitás equipo ni experiencia previa.",
+                  "fontFamily": "$body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "dE8UR",
+          "name": "s2",
+          "width": "fill_container",
+          "fill": "#F9FAFB",
+          "gap": 80,
+          "padding": [
+            80,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "V7tim",
+              "name": "s2Txt",
+              "width": 500,
+              "layout": "vertical",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "YDnrN",
+                  "fill": "$accent",
+                  "content": "Práctica Guiada",
+                  "fontFamily": "$headings",
+                  "fontSize": 32,
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "AdC7z",
+                  "fill": "$foreground_secondary",
+                  "content": "Para quienes ya terminaron el curso de iniciación y quieren seguir perfeccionándose.",
+                  "fontFamily": "$body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "P71GyZ",
+              "name": "s2Img",
+              "width": 500,
+              "height": 400,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/generated-1777765463392.png",
+                "mode": "fill"
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "eRjnY",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "$accent",
+          "gap": 32,
+          "padding": [
+            32,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "OM8Kw",
+              "name": "logoWrap",
+              "width": 320,
+              "height": 100,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/logo-blanco.png",
+                "mode": "fit"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "o4F6f",
+      "x": 3276,
+      "y": 0,
+      "name": "Página Contacto",
+      "width": 1440,
+      "height": 1800,
+      "fill": "#F9FAFB",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "LSlKm",
+          "name": "nav",
+          "width": "fill_container",
+          "height": 140,
+          "fill": "#FFFFFF",
+          "padding": [
+            0,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "zfgFN",
+              "name": "logo",
+              "width": 300,
+              "height": 100,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/logo.png",
+                "mode": "fit"
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "OyYVr",
+          "name": "formSection",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 160,
+          "padding": [
+            120,
+            60
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "gNIon",
+              "fill": "$accent",
+              "content": "Contactanos",
+              "fontFamily": "$headings",
+              "fontSize": 48,
+              "fontWeight": "bold"
+            },
+            {
+              "type": "text",
+              "id": "gKfsE",
+              "fill": "$foreground_secondary",
+              "content": "Estamos para ayudarte. Mandanos tu consulta y te responderemos pronto.",
+              "fontFamily": "$body",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "HwogF",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "$accent",
+          "gap": 32,
+          "padding": [
+            32,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "q2kJRy",
+              "name": "logoWrap",
+              "width": 320,
+              "height": 100,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/logo-blanco.png",
+                "mode": "fit"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "eBUWy",
+      "x": 4914,
+      "y": 0,
+      "name": "Página Gracias",
+      "width": 1440,
+      "height": 1080,
+      "fill": "#F9FAFB",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "hUpF1",
+          "name": "nav",
+          "width": "fill_container",
+          "height": 140,
+          "fill": "#FFFFFF",
+          "padding": [
+            0,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "CWtUJ",
+              "name": "logo",
+              "width": 300,
+              "height": 100,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/logo.png",
+                "mode": "fit"
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uUH3o",
+          "name": "content",
+          "width": "fill_container",
+          "height": 600,
+          "fill": "#F9FAFB",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            80,
+            120
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "fwyW2",
+              "fill": "$accent",
+              "content": "¡Diste en el blanco!",
+              "fontFamily": "$headings",
+              "fontSize": 48,
+              "fontWeight": "bold"
+            },
+            {
+              "type": "text",
+              "id": "IQDk1",
+              "fill": "$foreground_secondary",
+              "content": "Gracias por contactarnos.",
+              "fontFamily": "$body",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "PmshA",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "$accent",
+          "gap": 32,
+          "padding": [
+            32,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "segNZ",
+              "name": "logoWrap",
+              "width": 320,
+              "height": 100,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "images/logo-blanco.png",
+                "mode": "fit"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "accent": {
+      "type": "color",
+      "value": "#7060ab"
+    },
+    "accent_secondary": {
+      "type": "color",
+      "value": "#07cebb"
+    },
+    "body": {
+      "type": "string",
+      "value": "Inter"
+    },
+    "border_subtle": {
+      "type": "color",
+      "value": "#E5E7EB"
+    },
+    "foreground_inverse": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "foreground_muted": {
+      "type": "color",
+      "value": "#888888"
+    },
+    "foreground_primary": {
+      "type": "color",
+      "value": "#000000"
+    },
+    "foreground_secondary": {
+      "type": "color",
+      "value": "#888888"
+    },
+    "headings": {
+      "type": "string",
+      "value": "Inter"
+    },
+    "surface_inverse": {
+      "type": "color",
+      "value": "#110E18"
+    },
+    "surface_primary": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "surface_secondary": {
+      "type": "color",
+      "value": "#F1F5F9"
+    }
+  }
+}

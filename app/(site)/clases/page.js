@@ -1,28 +1,16 @@
 import { Calendar, MessageSquare } from 'lucide-react';
-import { createClient } from '@/utils/supabase/server';
+import { getSiteContent } from '@/utils/cms';
 import styles from './page.module.css';
-
-async function getSiteContent(page) {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('site_content')
-    .select('section, key, content')
-    .eq('page', page);
-  
-  if (error) {
-    console.error('Error fetching content:', error);
-    return {};
-  }
-
-  return data.reduce((acc, item) => {
-    if (!acc[item.section]) acc[item.section] = {};
-    acc[item.section][item.key] = item.content;
-    return acc;
-  }, {});
-}
 
 export default async function Clases() {
   const content = await getSiteContent('clases');
+
+  const renderDetails = (details) => {
+    if (!details) return null;
+    return details.split('\n').map((item, index) => (
+      <li key={index}>• {item.replace('• ', '')}</li>
+    ));
+  };
 
   return (
     <div className={styles.container}>
@@ -44,12 +32,10 @@ export default async function Clases() {
               {content.iniciacion?.text}
             </p>
             <ul className={styles.sectionList}>
-              <li>• Duración: 2 horas (120 min)</li>
-              <li>• Edad mínima: 12 años</li>
-              <li>• Incluye: Equipo completo e instrucción profesional</li>
+              {renderDetails(content.iniciacion?.details)}
             </ul>
             <button className={styles.btnSecondary}>
-              Reservá tu primer clase <Calendar size={18} />
+              {content.iniciacion?.btn_text || 'Reservá tu primer clase'} <Calendar size={18} />
             </button>
           </div>
         </div>
@@ -64,12 +50,10 @@ export default async function Clases() {
               {content.practica?.text}
             </p>
             <ul className={styles.sectionList}>
-              <li>• Duración: 2 horas por sesión</li>
-              <li>• Frecuencia: 1 o 2 veces por semana</li>
-              <li>• Incluye: Equipo del club e instrucción de profesores</li>
+              {renderDetails(content.practica?.details)}
             </ul>
             <button className={styles.btnSecondary}>
-              Consultar cupos <MessageSquare size={18} />
+              {content.practica?.btn_text || 'Consultar cupos'} <MessageSquare size={18} />
             </button>
           </div>
           <div className={styles.imgCol} style={{backgroundImage: `url('${content.practica?.image || '/images/generated-1777765463392.png'}')`}}></div>
@@ -86,12 +70,10 @@ export default async function Clases() {
               {content.gift?.text}
             </p>
             <ul className={styles.sectionList}>
-              <li>• Incluye: Clase de 2 horas, equipo completo e instrucción</li>
-              <li>• Formato: Voucher digital o físico</li>
-              <li>• Validez: 90 días desde la compra</li>
+              {renderDetails(content.gift?.details)}
             </ul>
             <button className={styles.btnSecondary}>
-              Consultar por Gift Card
+              {content.gift?.btn_text || 'Consultar por Gift Card'}
             </button>
           </div>
         </div>

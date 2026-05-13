@@ -1,27 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, MapPin, Clock, Phone, Gift, User, Mail, MessageSquare } from 'lucide-react';
-import { createClient } from '@/utils/supabase/server';
+import { getSiteContent } from '@/utils/cms.js';
 import styles from './page.module.css';
-
-async function getSiteContent(page) {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('site_content')
-    .select('section, key, content')
-    .eq('page', page);
-  
-  if (error) {
-    console.error('Error fetching content:', error);
-    return {};
-  }
-
-  // Transform array into nested object: { section: { key: content } }
-  return data.reduce((acc, item) => {
-    if (!acc[item.section]) acc[item.section] = {};
-    acc[item.section][item.key] = item.content;
-    return acc;
-  }, {});
-}
 
 export default async function Home() {
   const content = await getSiteContent('home');
@@ -102,7 +82,7 @@ export default async function Home() {
 
           <div className={styles.cardsGrid}>
             <div className={styles.iniciacionCard}>
-              <div className={styles.iniImg}></div>
+              <div className={styles.iniImg} style={{ backgroundImage: `url('${content.clases?.card_image || '/images/generated-1777764271413.png'}')` }}></div>
               <div className={styles.iniCont}>
                 <h3 className={styles.cardTitleSecondary}>{content.clases?.card_title}</h3>
                 <p className={styles.cardP}>
@@ -156,28 +136,28 @@ export default async function Home() {
 
           <div className={styles.newEstWrap}>
             <div className={styles.eCard}>
-              <div className={styles.e1Img}></div>
+              <div className={styles.eImg} style={{ backgroundImage: `url('${content.estilos?.tradicional_image || '/images/generated-1777764513186.png'}')` }}></div>
               <div className={styles.eTxt}>
                 <h3 className={styles.eTitle}>{content.estilos?.tradicional_title}</h3>
                 <p className={styles.eP}>{content.estilos?.tradicional_desc}</p>
               </div>
             </div>
             <div className={styles.eCard}>
-              <div className={styles.e2Img}></div>
+              <div className={styles.eImg} style={{ backgroundImage: `url('${content.estilos?.recurvo_image || '/images/generated-1777764585553.png'}')` }}></div>
               <div className={styles.eTxt}>
                 <h3 className={styles.eTitle}>{content.estilos?.recurvo_title}</h3>
                 <p className={styles.eP}>{content.estilos?.recurvo_desc}</p>
               </div>
             </div>
             <div className={styles.eCard}>
-              <div className={styles.e3Img}></div>
+              <div className={styles.eImg} style={{ backgroundImage: `url('${content.estilos?.compuesto_image || '/images/generated-1777765068740.png'}')` }}></div>
               <div className={styles.eTxt}>
                 <h3 className={styles.eTitle}>{content.estilos?.compuesto_title}</h3>
                 <p className={styles.eP}>{content.estilos?.compuesto_desc}</p>
               </div>
             </div>
             <div className={styles.eCard}>
-              <div className={styles.e4Img}></div>
+              <div className={styles.eImg} style={{ backgroundImage: `url('${content.estilos?.raso_image || '/images/generated-1777765081476.png'}')` }}></div>
               <div className={styles.eTxt}>
                 <h3 className={styles.eTitle}>{content.estilos?.raso_title}</h3>
                 <p className={styles.eP}>{content.estilos?.raso_desc}</p>
@@ -192,7 +172,7 @@ export default async function Home() {
         <div className={styles.sectionContent}>
           <div className={styles.infoHead}>
             <div className={styles.barSecondary}></div>
-            <h2 className={styles.sectionTitle}>Vení a conocernos</h2>
+            <h2 className={styles.sectionTitle}>{content.info?.title}</h2>
           </div>
           
           <div className={styles.infoBox}>
@@ -211,22 +191,22 @@ export default async function Home() {
             <div className={styles.infoRightDetails}>
               <div className={styles.iItemRow}>
                 <div className={styles.iItemText}>
-                  <h3 className={styles.iTitle}>Horarios</h3>
-                  <p className={styles.iSubtitle}>Lunes a Sábados de 10 a 22 hs</p>
+                  <h3 className={styles.iTitle}>{content.info?.label_hours}</h3>
+                  <p className={styles.iSubtitle}>{content.info?.hours}</p>
                 </div>
                 <Clock size={28} className={styles.iIcon} strokeWidth={1.5} />
               </div>
               <div className={styles.iItemRow}>
                 <div className={styles.iItemText}>
-                  <h3 className={styles.iTitle}>Dirección</h3>
-                  <p className={styles.iSubtitle}>Av. Vélez Sársfield 268, Barracas</p>
+                  <h3 className={styles.iTitle}>{content.info?.label_location}</h3>
+                  <p className={styles.iSubtitle}>{content.info?.location}</p>
                 </div>
                 <MapPin size={28} className={styles.iIcon} strokeWidth={1.5} />
               </div>
               <div className={styles.iItemRow}>
                 <div className={styles.iItemText}>
-                  <h3 className={styles.iTitle}>Teléfono</h3>
-                  <p className={styles.iSubtitle}>+54 9 11 6232-9424</p>
+                  <h3 className={styles.iTitle}>{content.info?.label_phone}</h3>
+                  <p className={styles.iSubtitle}>{content.info?.phone}</p>
                 </div>
                 <Phone size={28} className={styles.iIcon} strokeWidth={1.5} />
               </div>

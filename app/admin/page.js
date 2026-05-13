@@ -1,17 +1,19 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import { updateContent } from '@/app/actions';
+import { updateContent, uploadImage } from '@/app/actions';
 import styles from './page.module.css';
-import { Save, Image as ImageIcon, Layout, ArrowLeft } from 'lucide-react';
+import { Save, Image as ImageIcon, Layout, ArrowLeft, Home, BookOpen, Mail, Upload, Loader2, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Admin() {
   const supabase = createClient();
   const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activePage, setActivePage] = useState('home');
   const [saving, setSaving] = useState(null); // id of item being saved
+  const [uploading, setUploading] = useState(null); // id of item being uploaded
 
   useEffect(() => {
     fetchContent();
@@ -21,8 +23,8 @@ export default function Admin() {
     const { data, error } = await supabase
       .from('site_content')
       .select('*')
-      .order('page', { ascending: true })
-      .order('section', { ascending: true });
+      .order('section', { ascending: true })
+      .order('key', { ascending: true });
     
     if (error) console.error(error);
     else setContent(data);
@@ -33,76 +35,258 @@ export default function Admin() {
     setSaving(id);
     const res = await updateContent(id, value);
     if (res.success) {
-      // Show some feedback?
+      setContent(prev => prev.map(item => item.id === id ? { ...item, content: value } : item));
     }
     setSaving(null);
   }
 
-  if (loading) return <div className={styles.loading}>Cargando editor...</div>;
+  async function handleImageUpload(e, item) {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const pages = [...new Set(content.map(item => item.page))];
+    setUploading(item.id);
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    // Generate a clean path: page/section/filename
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${item.section}-${item.key}-${Date.now()}.${fileExt}`;
+    const path = `${item.page}/${fileName}`;
+    formData.append('path', path);
+
+    const res = await uploadImage(formData);
+    if (res.success) {
+      await handleSave(item.id, res.url);
+    }
+    setUploading(null);
+  }
+
+  const keyLabels = {
+    // Hero
+    'hero/title': 'Frase Principal (Hero)',
+    'hero/subtitle': 'Texto secundario (Hero)',
+    'hero/image': 'Imagen de fondo (Hero)',
+    'hero/location': 'Texto de Ubicación (Hero)',
+    'hero/primary_btn': 'Texto Botón Reservar',
+    'hero/secondary_btn': 'Texto Botón Regalar',
+    
+    // Clases Page
+    'clases/hero/title': 'Título Hero (Clases)',
+    'clases/hero/subtitle': 'Subtítulo Hero (Clases)',
+    'clases/hero/image': 'Imagen Hero (Clases)',
+    'clases/iniciacion/title': 'Título: Iniciación',
+    'clases/iniciacion/text': 'Descripción: Iniciación',
+    'clases/iniciacion/details': 'Lista de Detalles (Iniciación)',
+    'clases/iniciacion/image': 'Foto: Iniciación',
+    'clases/iniciacion/btn_text': 'Texto Botón (Iniciación)',
+    'clases/practica/title': 'Título: Práctica',
+    'clases/practica/text': 'Descripción: Práctica',
+    'clases/practica/details': 'Lista de Detalles (Práctica)',
+    'clases/practica/image': 'Foto: Práctica',
+    'clases/practica/btn_text': 'Texto Botón (Práctica)',
+    'clases/gift/title': 'Título: Gift Card',
+    'clases/gift/text': 'Descripción: Gift Card',
+    'clases/gift/details': 'Lista de Detalles (Gift Card)',
+    'clases/gift/image': 'Foto: Gift Card',
+    'clases/gift/btn_text': 'Texto Botón (Gift Card)',
+    
+    // Estilos (Home)
+    'estilos/title': 'Título de la sección Estilos',
+    'estilos/subtitle': 'Introducción a los estilos',
+    'estilos/tradicional_title': 'Nombre: Estilo Tradicional',
+    'estilos/tradicional_desc': 'Descripción: Estilo Tradicional',
+    'estilos/tradicional_image': 'Foto: Tradicional',
+    'estilos/recurvo_title': 'Nombre: Estilo Recurvo',
+    'estilos/recurvo_desc': 'Descripción: Estilo Recurvo',
+    'estilos/recurvo_image': 'Foto: Recurvo',
+    'estilos/compuesto_title': 'Nombre: Estilo Compuesto',
+    'estilos/compuesto_desc': 'Descripción: Estilo Compuesto',
+    'estilos/compuesto_image': 'Foto: Compuesto',
+    'estilos/raso_title': 'Nombre: Estilo Raso',
+    'estilos/raso_desc': 'Descripción: Estilo Raso',
+    'estilos/raso_image': 'Foto: Raso',
+    
+    // Info / Contacto
+    'info/title': 'Título de la sección Ubicación',
+    'info/location': 'Dirección Principal',
+    'info/email': 'Email de Contacto',
+    'info/hours': 'Horarios de Atención',
+    'info/phone': 'Teléfono / WhatsApp',
+    'info/label_hours': 'Etiqueta: Horarios',
+    'info/label_location': 'Etiqueta: Dirección',
+    'info/label_phone': 'Etiqueta: Teléfono',
+    
+    // Footer
+    'footer/address_line1': 'Dirección (Línea 1)',
+    'footer/address_line2': 'Dirección (Línea 2)',
+    'footer/instagram': 'Usuario de Instagram',
+    'footer/phone': 'Teléfono / WhatsApp',
+    'footer/hours': 'Horarios de atención',
+    
+    // Contacto Page
+    'contacto/hero/title': 'Título de la página (Contacto)',
+    'contacto/hero/subtitle': 'Subtítulo / Introducción (Contacto)',
+    'contacto/info/email': 'Email mostrado',
+    'contacto/info/location': 'Ubicación mostrada',
+    'contacto/info/phone': 'Teléfono mostrado',
+  };
+
+  const sectionLabels = {
+    'hero': '1. Portada / Hero',
+    'iniciacion': '2. Iniciación',
+    'practica': '3. Práctica Regular',
+    'gift': '4. Experiencia de Regalo (Gift Card)',
+    'clases': 'Clases e Iniciación (Home)',
+    'estilos': 'Estilos de Arquería (Home)',
+    'info': 'Ubicación y Contacto (Home)',
+    'footer': 'Pie de Página (Footer)'
+  };
+
+  const sectionOrder = ['hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'footer'];
+
+  if (loading) return <div className={styles.loading}><Loader2 className={styles.spin} /> Cargando panel...</div>;
+
+  const filteredContent = content.filter(item => item.page === activePage);
+  
+  // Sort sections according to sectionOrder
+  const sections = [...new Set(filteredContent.map(item => item.section))]
+    .sort((a, b) => {
+      const indexA = sectionOrder.indexOf(a);
+      const indexB = sectionOrder.indexOf(b);
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
 
   return (
     <div className={styles.adminContainer}>
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <Link href="/" className={styles.backBtn}><ArrowLeft size={16} /> Ver sitio</Link>
-          <h1 className={styles.title}>Panel de Administración</h1>
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarHeader}>
+          <div className={styles.logo}>CAdBA CMS</div>
+          <p className={styles.sidebarSubtitle}>Gestión de Contenidos</p>
         </div>
-        <p className={styles.status}>Conectado a Supabase</p>
-      </header>
+        
+        <nav className={styles.nav}>
+          <div className={styles.navGroupLabel}>Páginas</div>
+          <button 
+            className={`${styles.navLink} ${activePage === 'home' ? styles.activeNavLink : ''}`}
+            onClick={() => setActivePage('home')}
+          >
+            <Home size={18} /> Inicio (Home)
+          </button>
+          <button 
+            className={`${styles.navLink} ${activePage === 'clases' ? styles.activeNavLink : ''}`}
+            onClick={() => setActivePage('clases')}
+          >
+            <BookOpen size={18} /> Clases
+          </button>
+          <button 
+            className={`${styles.navLink} ${activePage === 'contacto' ? styles.activeNavLink : ''}`}
+            onClick={() => setActivePage('contacto')}
+          >
+            <Mail size={18} /> Contacto
+          </button>
+        </nav>
 
-      <main className={styles.main}>
-        {pages.map(page => (
-          <section key={page} className={styles.pageSection}>
-            <h2 className={styles.pageTitle}><Layout size={20} /> Página: {page.toUpperCase()}</h2>
-            
-            <div className={styles.contentGrid}>
-              {content.filter(item => item.page === page).map(item => (
-                <div key={item.id} className={styles.card}>
-                  <div className={styles.cardHeader}>
-                    <span className={styles.sectionTag}>{item.section}</span>
-                    <span className={styles.keyTag}>{item.key}</span>
-                  </div>
-                  
-                  {item.content_type === 'text' ? (
-                    <textarea 
-                      className={styles.textarea}
-                      defaultValue={item.content}
-                      onBlur={(e) => {
-                        if (e.target.value !== item.content) {
-                          handleSave(item.id, e.target.value);
-                        }
-                      }}
-                    />
-                  ) : (
-                    <div className={styles.imageEdit}>
-                      <img src={item.content} alt={item.key} className={styles.previewImg} />
-                      <div className={styles.imgInputGroup}>
-                        <ImageIcon size={16} />
-                        <input 
-                          type="text" 
-                          defaultValue={item.content}
-                          className={styles.imgInput}
-                          onBlur={(e) => handleSave(item.id, e.target.value)}
-                        />
+        <div className={styles.sidebarFooter}>
+          <Link href="/" className={styles.backBtn}><ArrowLeft size={16} /> Ver sitio público</Link>
+        </div>
+      </aside>
+
+      <div className={styles.mainWrapper}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>
+            {activePage === 'home' ? 'Editando: Página de Inicio' : 
+             activePage === 'clases' ? 'Editando: Página de Clases' : 'Editando: Página de Contacto'}
+          </h1>
+          <div className={styles.status}>Base de Datos: Online</div>
+        </header>
+
+        <main className={styles.content}>
+          {sections.length > 0 ? (
+            sections.map(section => (
+              <section key={section} className={styles.pageSection}>
+                <div className={styles.sectionHeader}>
+                  <div className={styles.sectionIcon}><Layout size={20} /></div>
+                  <h2 className={styles.sectionTitle}>{sectionLabels[section] || section}</h2>
+                </div>
+                
+                <div className={styles.contentGrid}>
+                  {filteredContent.filter(item => item.section === section).map(item => (
+                    <div key={item.id} className={styles.card}>
+                      <div className={styles.cardHeader}>
+                        <div className={styles.labelGroup}>
+                          <span className={styles.fieldLabel}>{keyLabels[`${item.section}/${item.key}`] || keyLabels[item.key] || 'Campo'}</span>
+                          <code className={styles.fieldKey}>{item.key}</code>
+                        </div>
+                        <div className={styles.saveStatus}>
+                          {saving === item.id ? (
+                            <span className={styles.saving}><Loader2 size={12} className={styles.spin} /> Guardando...</span>
+                          ) : (
+                            <span className={styles.saved}><CheckCircle size={12} /> Guardado</span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className={styles.cardBody}>
+                        {item.content_type === 'text' ? (
+                          <textarea 
+                            className={styles.textarea}
+                            defaultValue={item.content}
+                            onBlur={(e) => {
+                              if (e.target.value !== item.content) {
+                                handleSave(item.id, e.target.value);
+                              }
+                            }}
+                            placeholder={`Ingresá el texto para ${keyLabels[item.key] || item.key}...`}
+                          />
+                        ) : (
+                          <div className={styles.imageEdit}>
+                            <div className={styles.previewContainer}>
+                              <img src={item.content} alt={item.key} className={styles.previewImg} />
+                              <div className={styles.imageInfo}>
+                                <ImageIcon size={14} /> <span>{item.content.split('/').pop()}</span>
+                              </div>
+                            </div>
+                            
+                            <div className={styles.imageMeta}>
+                              <div className={styles.dimensionBadge}>
+                                Medida recomendada: {
+                                  (item.section === 'hero' && item.key === 'image') ? '1920x1080px' :
+                                  (item.section === 'clases' && item.key === 'card_image') ? '800x600px' :
+                                  item.key.includes('image') ? '800x600px' : 'Libre'
+                                }
+                              </div>
+                            </div>
+
+                            <label className={styles.uploadBtn}>
+                              <Upload size={16} />
+                              <span>{uploading === item.id ? 'Subiendo...' : 'Cambiar Imagen'}</span>
+                              <input 
+                                type="file" 
+                                className={styles.hiddenInput} 
+                                accept="image/*"
+                                onChange={(e) => handleImageUpload(e, item)}
+                                disabled={uploading === item.id}
+                              />
+                            </label>
+                          </div>
+                        )}
                       </div>
                     </div>
-                  )}
-                  
-                  <div className={styles.cardFooter}>
-                    {saving === item.id ? (
-                      <span className={styles.saving}>Guardando...</span>
-                    ) : (
-                      <span className={styles.saved}>Autoguardado</span>
-                    )}
-                  </div>
+                  ))}
                 </div>
-              ))}
+              </section>
+            ))
+          ) : (
+            <div className={styles.empty}>
+              <Loader2 className={styles.spin} size={48} />
+              <p>Sincronizando con Supabase...</p>
             </div>
-          </section>
-        ))}
-      </main>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
