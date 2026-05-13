@@ -1,27 +1,46 @@
-"use client";
-
 import { Calendar, MessageSquare } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 import styles from './page.module.css';
 
-export default function Clases() {
+async function getSiteContent(page) {
+  const { data, error } = await supabase
+    .from('site_content')
+    .select('section, key, content')
+    .eq('page', page);
+  
+  if (error) {
+    console.error('Error fetching content:', error);
+    return {};
+  }
+
+  return data.reduce((acc, item) => {
+    if (!acc[item.section]) acc[item.section] = {};
+    acc[item.section][item.key] = item.content;
+    return acc;
+  }, {});
+}
+
+export default async function Clases() {
+  const content = await getSiteContent('clases');
+
   return (
     <div className={styles.container}>
       {/* Hero Section */}
-      <section className={styles.heroSec}>
+      <section className={styles.heroSec} style={{ backgroundImage: `url('${content.hero?.image || '/images/generated-1777765081476.png'}')` }}>
         <div className={styles.heroOverlay}>
-          <h1 className={styles.heroTitle}>Iniciación y clases para todos los niveles</h1>
-          <p className={styles.heroSubtitle}>Desde tus primeros pasos hasta la alta competencia</p>
+          <h1 className={styles.heroTitle}>{content.hero?.title}</h1>
+          <p className={styles.heroSubtitle}>{content.hero?.subtitle}</p>
         </div>
       </section>
 
       {/* Section 1: Iniciación */}
       <section className={styles.sectionWhite}>
         <div className={styles.contentWrap}>
-          <div className={styles.imgCol} style={{backgroundImage: "url('/images/generated-1777764271413.png')"}}></div>
+          <div className={styles.imgCol} style={{backgroundImage: `url('${content.iniciacion?.image || '/images/generated-1777764271413.png'}')`}}></div>
           <div className={styles.textCol}>
-            <h2 className={styles.sectionTitle}>Clase de Iniciación</h2>
+            <h2 className={styles.sectionTitle}>{content.iniciacion?.title}</h2>
             <p className={styles.sectionP}>
-              La puerta de entrada ideal al mundo de la arquería. En esta clase nos enfocamos en brindarte las medidas fundamentales de seguridad y el manejo básico del arco, para que puedas disparar tus primeras flechas con una noción general de técnica.
+              {content.iniciacion?.text}
             </p>
             <ul className={styles.sectionList}>
               <li>• Duración: 2 horas (120 min)</li>
@@ -39,9 +58,9 @@ export default function Clases() {
       <section className={styles.sectionGray}>
         <div className={styles.contentWrapReverse}>
           <div className={styles.textCol}>
-            <h2 className={styles.sectionTitle}>Práctica para Todos los Niveles</h2>
+            <h2 className={styles.sectionTitle}>{content.practica?.title}</h2>
             <p className={styles.sectionP}>
-              Una vez superada la iniciación, podés sumarte a nuestros grupos regulares. Aquí te acompañamos en el perfeccionamiento de tu técnica, enfocándonos en mejorar el agrupado de tus flechas y alcanzar tu máximo potencial en un ambiente de compañerismo.
+              {content.practica?.text}
             </p>
             <ul className={styles.sectionList}>
               <li>• Duración: 2 horas por sesión</li>
@@ -52,18 +71,18 @@ export default function Clases() {
               Consultar cupos <MessageSquare size={18} />
             </button>
           </div>
-          <div className={styles.imgCol} style={{backgroundImage: "url('/images/generated-1777765463392.png')"}}></div>
+          <div className={styles.imgCol} style={{backgroundImage: `url('${content.practica?.image || '/images/generated-1777765463392.png'}')`}}></div>
         </div>
       </section>
       
       {/* Section 3: Regalá */}
       <section className={styles.sectionWhite}>
         <div className={styles.contentWrap}>
-          <div className={styles.imgCol} style={{backgroundImage: "url('/images/generated-1777764819442.png')"}}></div>
+          <div className={styles.imgCol} style={{backgroundImage: `url('${content.gift?.image || '/images/generated-1777764819442.png'}')`}}></div>
           <div className={styles.textCol}>
-            <h2 className={styles.sectionTitle}>Regalá una experiencia única</h2>
+            <h2 className={styles.sectionTitle}>{content.gift?.title}</h2>
             <p className={styles.sectionP}>
-              Sorprendé a alguien especial con una clase de arquería. Podés regalar una clase de iniciación o venir juntos para compartir este deporte milenario en un ambiente profesional y divertido.
+              {content.gift?.text}
             </p>
             <ul className={styles.sectionList}>
               <li>• Incluye: Clase de 2 horas, equipo completo e instrucción</li>

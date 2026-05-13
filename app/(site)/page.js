@@ -1,38 +1,58 @@
-"use client";
-
 import Link from 'next/link';
-import { ArrowRight, MapPin, User, Mail, MessageSquare, Clock, Phone, Gift } from 'lucide-react';
+import { ArrowRight, MapPin, Clock, Phone, Gift, User, Mail, MessageSquare } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 import styles from './page.module.css';
 
-export default function Home() {
+async function getSiteContent(page) {
+  const { data, error } = await supabase
+    .from('site_content')
+    .select('section, key, content')
+    .eq('page', page);
+  
+  if (error) {
+    console.error('Error fetching content:', error);
+    return {};
+  }
+
+  // Transform array into nested object: { section: { key: content } }
+  return data.reduce((acc, item) => {
+    if (!acc[item.section]) acc[item.section] = {};
+    acc[item.section][item.key] = item.content;
+    return acc;
+  }, {});
+}
+
+export default async function Home() {
+  const content = await getSiteContent('home');
+
   return (
     <div className={styles.container}>
       {/* Hero Section */}
-      <section className={styles.heroSec}>
+      <section className={styles.heroSec} style={{ backgroundImage: `url('${content.hero?.image || '/images/generated-1777763987465.png'}')` }}>
         <div className={styles.heroOverlayGradient}></div>
         <div className={styles.heroContentWrap}>
           
           <div className={styles.heroLeft}>
             <div className={styles.heroTitleWrap}>
               <h1 className={styles.mainTitle}>
-                Probá una <br />
-                <span className={styles.textAccent}>clase de arquería</span><br />
-                en Buenos Aires
+                {content.hero?.title?.split('clase de arquería')[0]}
+                <span className={styles.textAccent}>clase de arquería</span>
+                {content.hero?.title?.split('clase de arquería')[1]}
               </h1>
             </div>
             <p className={styles.heroText}>
-              No hace falta experiencia ni equipo. Viví una actividad distinta, con clases de iniciación para principiantes.
+              {content.hero?.subtitle}
             </p>
             <div className={styles.locationWrap}>
               <MapPin size={18} className={styles.locationIcon} />
-              <span className={styles.locationText}>Barracas, CABA</span>
+              <span className={styles.locationText}>{content.hero?.location}</span>
             </div>
             <div className={styles.heroBtns}>
               <Link href="/clases" className={styles.btnPrimary}>
-                Consultá cupos <ArrowRight size={18} />
+                {content.hero?.primary_btn} <ArrowRight size={18} />
               </Link>
               <button className={styles.btnOutline}>
-                <Gift size={18} /> Regalá una clase
+                <Gift size={18} /> {content.hero?.secondary_btn}
               </button>
             </div>
           </div>
@@ -42,7 +62,7 @@ export default function Home() {
               <div className={styles.formBar}></div>
               <h3 className={styles.formTitle}>Consultanos por tu clase</h3>
             </div>
-            <form className={styles.heroForm} onSubmit={(e) => e.preventDefault()}>
+            <form className={styles.heroForm}>
               <div className={styles.inputWrap}>
                 <User size={18} className={styles.inputIcon} />
                 <input type="text" placeholder="Nombre" className={styles.inputField} />
@@ -69,13 +89,13 @@ export default function Home() {
         <div className={styles.sectionContent}>
           <div className={styles.clasesHead}>
             <div className={styles.barSecondary}></div>
-            <h2 className={styles.sectionTitle}>Iniciación y clases para todos los niveles</h2>
+            <h2 className={styles.sectionTitle}>{content.clases?.title}</h2>
           </div>
           
           <div className={styles.introTxt}>
-            <h3 className={styles.introSubtitle}>Tu camino en la arquería</h3>
+            <h3 className={styles.introSubtitle}>{content.clases?.intro_subtitle}</h3>
             <p className={styles.introP}>
-              En el Club de Arquería de Buenos Aires (CAdBA) creemos que cada arquero tiene un camino único. Por eso, te acompañamos desde tus primeros pasos en la iniciación hasta alcanzar niveles de competición nacional, brindando un ambiente profesional y humano donde podrás desarrollar tu técnica y pasión por este deporte milenario.
+              {content.clases?.intro_text}
             </p>
           </div>
 
@@ -83,9 +103,9 @@ export default function Home() {
             <div className={styles.iniciacionCard}>
               <div className={styles.iniImg}></div>
               <div className={styles.iniCont}>
-                <h3 className={styles.cardTitleSecondary}>Clase de Iniciación</h3>
+                <h3 className={styles.cardTitleSecondary}>{content.clases?.card_title}</h3>
                 <p className={styles.cardP}>
-                  La puerta de entrada ideal al mundo de la arquería. Enfocada en brindarte las medidas fundamentales de seguridad y el manejo básico del arco.
+                  {content.clases?.card_text}
                 </p>
                 <ul className={styles.cardList}>
                   <li>• Duración: 4 clases</li>
@@ -109,9 +129,9 @@ export default function Home() {
                 </svg>
               </div>
               <div className={styles.txtC}>
-                <h3 className={styles.giftTitle}>Regalá una experiencia</h3>
+                <h3 className={styles.giftTitle}>{content.clases?.gift_title}</h3>
                 <p className={styles.giftP}>
-                  Sorprendé a alguien regalando una clase de iniciación en arquería. Podés regalar la experiencia o venir juntos para compartir este deporte.
+                  {content.clases?.gift_text}
                 </p>
               </div>
               <button className={styles.btnSecondary}>Más información</button>
@@ -126,40 +146,40 @@ export default function Home() {
           <div className={styles.estHead}>
             <div className={styles.titleWrap}>
               <div className={styles.barSecondary}></div>
-              <h2 className={styles.sectionTitle}>Descubrí tu estilo de arquería</h2>
+              <h2 className={styles.sectionTitle}>{content.estilos?.title}</h2>
             </div>
             <p className={styles.estIntroP}>
-              En CAdBA, una vez formadas las nociones básicas, podés elegir el estilo de arquería que más te divierta. Cada uno tiene sus particularidades y su propio camino de aprendizaje.
+              {content.estilos?.subtitle}
             </p>
           </div>
 
           <div className={styles.newEstWrap}>
             <div className={styles.eCard}>
-              <div className={styles.e1Img} style={{backgroundImage: "url('/images/generated-1777764723827.png')"}}></div>
+              <div className={styles.e1Img}></div>
               <div className={styles.eTxt}>
-                <h3 className={styles.eTitle}>Tradicional</h3>
-                <p className={styles.eP}>Calibre en sus dimensiones y materiales imitando los ajustes instintivos. Su particularidad es el tiro intuitivo e instintivo, enfocándose en la conexión boscosa y armónica.</p>
+                <h3 className={styles.eTitle}>{content.estilos?.tradicional_title}</h3>
+                <p className={styles.eP}>{content.estilos?.tradicional_desc}</p>
               </div>
             </div>
             <div className={styles.eCard}>
-              <div className={styles.e2Img} style={{backgroundImage: "url('/images/generated-1777764881194.png')"}}></div>
+              <div className={styles.e2Img}></div>
               <div className={styles.eTxt}>
-                <h3 className={styles.eTitle}>Recurvo</h3>
-                <p className={styles.eP}>Es el estilo presente en los Juegos Olímpicos. Utiliza elementos de precisión como miras y estabilizadores. Se distingue por su enfoque en la alineación, el logro y la postura estandarizada.</p>
+                <h3 className={styles.eTitle}>{content.estilos?.recurvo_title}</h3>
+                <p className={styles.eP}>{content.estilos?.recurvo_desc}</p>
               </div>
             </div>
             <div className={styles.eCard}>
-              <div className={styles.e3Img} style={{backgroundImage: "url('/images/generated-1777764910374.png')"}}></div>
+              <div className={styles.e3Img}></div>
               <div className={styles.eTxt}>
-                <h3 className={styles.eTitle}>Compuesto</h3>
-                <p className={styles.eP}>Utiliza un sistema de poleas que reduce el esfuerzo necesario para sostener el arco en apunte. Se diferencia por su diseño tecnológico, ofreciendo gran velocidad de flecha y precisión milimétrica.</p>
+                <h3 className={styles.eTitle}>{content.estilos?.compuesto_title}</h3>
+                <p className={styles.eP}>{content.estilos?.compuesto_desc}</p>
               </div>
             </div>
             <div className={styles.eCard}>
-              <div className={styles.e4Img} style={{backgroundImage: "url('/images/generated-1777764639003.png')"}}></div>
+              <div className={styles.e4Img}></div>
               <div className={styles.eTxt}>
-                <h3 className={styles.eTitle}>Raso</h3>
-                <p className={styles.eP}>Arco de un modelo puro sin miras ni estabilizadores. Se diferencia en que el arquero calcula el apunte visualmente, estimando mentalmente el tiro en forma manual.</p>
+                <h3 className={styles.eTitle}>{content.estilos?.raso_title}</h3>
+                <p className={styles.eP}>{content.estilos?.raso_desc}</p>
               </div>
             </div>
           </div>
@@ -177,7 +197,6 @@ export default function Home() {
           <div className={styles.infoBox}>
             <div className={styles.infoLeftMap}>
               <div className={styles.mapTag}>CAdBA</div>
-              {/* Simulando el mapa con un iframe de Google Maps a Barracas */}
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3282.6865612260656!2d-58.3846618!3d-34.6373197!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccb29a28795cd%3A0xc6eb9d46d0a790f9!2sAv.%20V%C3%A9lez%20S%C3%A1rsfield%20268%2C%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1715654321000!5m2!1ses-419!2sar" 
                 width="100%" 
@@ -189,7 +208,6 @@ export default function Home() {
               </iframe>
             </div>
             <div className={styles.infoRightDetails}>
-              
               <div className={styles.iItemRow}>
                 <div className={styles.iItemText}>
                   <h3 className={styles.iTitle}>Horarios</h3>
@@ -197,7 +215,6 @@ export default function Home() {
                 </div>
                 <Clock size={28} className={styles.iIcon} strokeWidth={1.5} />
               </div>
-
               <div className={styles.iItemRow}>
                 <div className={styles.iItemText}>
                   <h3 className={styles.iTitle}>Dirección</h3>
@@ -205,7 +222,6 @@ export default function Home() {
                 </div>
                 <MapPin size={28} className={styles.iIcon} strokeWidth={1.5} />
               </div>
-
               <div className={styles.iItemRow}>
                 <div className={styles.iItemText}>
                   <h3 className={styles.iTitle}>Teléfono</h3>
@@ -213,7 +229,6 @@ export default function Home() {
                 </div>
                 <Phone size={28} className={styles.iIcon} strokeWidth={1.5} />
               </div>
-
             </div>
           </div>
         </div>
