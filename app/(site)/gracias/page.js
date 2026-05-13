@@ -1,7 +1,11 @@
 import Link from 'next/link';
+import { getSiteContent } from "@/utils/cms";
 import styles from './page.module.css';
 
-export default function Gracias() {
+export default async function Gracias() {
+  const content = await getSiteContent('contacto');
+  const data = content.gracias || {};
+
   return (
     <div className={styles.container}>
       <section className={styles.content}>
@@ -13,12 +17,12 @@ export default function Gracias() {
             <path d="M12 10l5 -5"></path>
           </svg>
         </div>
-        <h1 className={styles.title}>¡Diste en el blanco!</h1>
+        <h1 className={styles.title}>{data.title || '¡Diste en el blanco!'}</h1>
         <p className={styles.subtitle}>
-          Gracias por contactarnos. Hemos recibido tu consulta y un miembro de nuestro equipo te responderá a la brevedad.
+          {data.subtitle || 'Gracias por contactarnos. Hemos recibido tu consulta y un miembro de nuestro equipo te responderá a la brevedad.'}
         </p>
         <Link href="/" className={styles.homeBtn}>
-          Volver al inicio
+          {data.btn_text || 'Volver al inicio'}
         </Link>
       </section>
     </div>

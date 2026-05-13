@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { updateContent, uploadImage } from '@/app/actions';
 import styles from './page.module.css';
-import { Save, Image as ImageIcon, Layout, ArrowLeft, Home, BookOpen, Mail, Upload, Loader2, CheckCircle } from 'lucide-react';
+import { Save, Image as ImageIcon, Layout, ArrowLeft, Home, BookOpen, Mail, Upload, Loader2, CheckCircle, Shield } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Admin() {
@@ -133,18 +133,35 @@ export default function Admin() {
     
     // Contacto Page
     'contacto/hero/title': 'Título de la página (Contacto)',
-    'contacto/hero/subtitle': 'Subtítulo / Introducción (Contacto)',
     'contacto/info/email': 'Email mostrado',
     'contacto/info/location': 'Ubicación mostrada',
     'contacto/info/phone': 'Teléfono mostrado',
     
+    // Gracias Page (dentro de Contacto)
+    'contacto/gracias/title': 'Título (Página de Gracias)',
+    'contacto/gracias/subtitle': 'Mensaje (Página de Gracias)',
+    'contacto/gracias/btn_text': 'Botón (Página de Gracias)',
+    
+    // Marketing
+    'marketing/general/ga_id': 'Google Analytics ID (G-XXXXX)',
+    'marketing/general/gtm_id': 'Google Tag Manager ID (GTM-XXXXX)',
+    'marketing/general/meta_pixel_id': 'Meta Pixel ID',
+    'marketing/custom/head_scripts': 'Scripts Personalizados (Head)',
+    'marketing/custom/body_scripts': 'Scripts Personalizados (Body)',
+    
     // Navbar
     'navbar/btn_text': 'Botón Menú (Texto)',
     'navbar/btn_url': 'Botón Menú (Link)',
+    
+    // WhatsApp
+    'whatsapp/phone': 'Número de WhatsApp (con código de país)',
+    'whatsapp/message': 'Mensaje Pre-escrito',
+    'whatsapp/label': 'Texto del Botón Flotante',
   };
 
   const sectionLabels = {
     'navbar': '0. Navegación (Global)',
+    'whatsapp': 'Botón de WhatsApp',
     'hero': '1. Portada / Hero',
     'iniciacion': '2. Iniciación',
     'practica': '3. Práctica Regular',
@@ -152,10 +169,13 @@ export default function Admin() {
     'clases': 'Clases e Iniciación (Home)',
     'estilos': 'Estilos de Arquería (Home)',
     'info': 'Ubicación y Contacto (Home)',
-    'footer': 'Pie de Página (Footer)'
+    'footer': 'Pie de Página (Footer)',
+    'gracias': 'Página de Éxito (Gracias)',
+    'general': 'Configuración General',
+    'custom': 'Scripts Personalizados'
   };
 
-  const sectionOrder = ['navbar', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'footer'];
+  const sectionOrder = ['navbar', 'whatsapp', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'footer'];
 
   const keyOrder = [
     'title_top', 'title_accent', 'title_bottom', 'title', 'subtitle', 'image',
@@ -165,7 +185,8 @@ export default function Admin() {
     'raso_title', 'raso_desc', 'raso_image',
     'label_location', 'location', 'label_hours', 'hours', 'label_phone', 'phone', 'email',
     'primary_btn', 'primary_url', 'secondary_btn', 'secondary_url', 
-    'text', 'details', 'btn_text', 'btn_url'
+    'text', 'details', 'btn_text', 'btn_url',
+    'ga_id', 'gtm_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
   ];
 
   if (loading) return <div className={styles.loading}><Loader2 className={styles.spin} /> Cargando panel...</div>;
@@ -222,6 +243,12 @@ export default function Admin() {
           >
             <Mail size={18} /> Contacto
           </button>
+          <button 
+            className={`${styles.navLink} ${activePage === 'marketing' ? styles.activeNavLink : ''}`}
+            onClick={() => setActivePage('marketing')}
+          >
+            <Shield size={18} /> Marketing & Tracking
+          </button>
         </nav>
 
         <div className={styles.sidebarFooter}>
@@ -233,7 +260,8 @@ export default function Admin() {
         <header className={styles.header}>
           <h1 className={styles.title}>
             {activePage === 'home' ? 'Editando: Página de Inicio' : 
-             activePage === 'clases' ? 'Editando: Página de Clases' : 'Editando: Página de Contacto'}
+             activePage === 'clases' ? 'Editando: Página de Clases' : 
+             activePage === 'contacto' ? 'Editando: Página de Contacto' : 'Marketing & Tracking'}
           </h1>
           <div className={styles.status}>Base de Datos: Online</div>
         </header>
@@ -252,7 +280,7 @@ export default function Admin() {
                     <div key={item.id} className={`${styles.card} ${item.key.startsWith('title_') ? styles.fullWidth : ''}`}>
                       <div className={styles.cardHeader}>
                         <div className={styles.labelGroup}>
-                          <span className={styles.fieldLabel}>{keyLabels[`${item.section}/${item.key}`] || keyLabels[item.key] || 'Campo'}</span>
+                          <span className={styles.fieldLabel}>{keyLabels[`${item.page}/${item.section}/${item.key}`] || keyLabels[`${item.section}/${item.key}`] || keyLabels[item.key] || 'Campo'}</span>
                           <code className={styles.fieldKey}>{item.key}</code>
                         </div>
                         <div className={styles.saveStatus}>

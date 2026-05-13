@@ -61,7 +61,7 @@ export default async function Clases() {
       </section>
       
       {/* Section 3: Regalá */}
-      <section className={styles.sectionWhite}>
+      <section id="regala" className={styles.sectionWhite}>
         <div className={styles.contentWrap}>
           <div className={styles.imgCol} style={{backgroundImage: `url('${content.gift?.image || '/images/generated-1777764819442.png'}')`}}></div>
           <div className={styles.textCol}>

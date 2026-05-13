@@ -13,7 +13,7 @@ export default async function SiteLayout({ children }) {
         {children}
       </main>
       <Footer content={content.footer} />
-      <WhatsAppButton />
+      <WhatsAppButton content={content.whatsapp} />
     </>
   );
 }
