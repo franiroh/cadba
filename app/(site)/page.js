@@ -76,11 +76,13 @@ export default async function Home() {
                 <p className={styles.cardP}>
                   {content.clases?.card_text}
                 </p>
-                <ul className={styles.cardList}>
-                  <li>• Duración: 4 clases</li>
-                  <li>• Edad mínima: 12 años</li>
-                  <li>• Incluye: Equipo e instrucción</li>
-                </ul>
+                {content.clases?.card_details && (
+                  <ul className={styles.cardList}>
+                    {content.clases.card_details.split('\n').map((item, index) => (
+                      <li key={index}>• {item.replace('• ', '')}</li>
+                    ))}
+                  </ul>
+                )}
                 <Link href={content.clases?.card_url || '/clases'} className={styles.btnSecondary}>
                   Reservá tu primer clase <ArrowRight size={16} />
                 </Link>

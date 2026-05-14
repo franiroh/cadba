@@ -75,6 +75,19 @@ export default function Admin() {
     'hero/secondary_btn': 'Texto Botón Regalar',
     'hero/secondary_url': 'Link Botón Regalar',
     
+    // Clases e Iniciación (Home)
+    'clases/title': 'Título de la sección Clases',
+    'clases/intro_subtitle': 'Subtítulo introducción',
+    'clases/intro_text': 'Texto de introducción',
+    'clases/card_title': 'Título de la tarjeta Iniciación',
+    'clases/card_text': 'Texto de la tarjeta Iniciación',
+    'clases/card_details': 'Lista de Detalles (Iniciación)',
+    'clases/card_image': 'Imagen de la tarjeta Iniciación',
+    'clases/card_url': 'Link de la tarjeta Iniciación',
+    'clases/gift_title': 'Título de la tarjeta Regalo',
+    'clases/gift_text': 'Texto de la tarjeta Regalo',
+    'clases/gift_url': 'Link de la tarjeta Regalo',
+    
     // Clases Page
     'clases/hero/title': 'Título Hero (Clases)',
     'clases/hero/subtitle': 'Subtítulo Hero (Clases)',
@@ -181,7 +194,9 @@ export default function Admin() {
   const sectionOrder = ['general', 'navbar', 'whatsapp', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'gracias', 'custom', 'footer'];
 
   const keyOrder = [
-    'title_top', 'title_accent', 'title_bottom', 'title', 'subtitle', 'image',
+    'title_top', 'title_accent', 'title_bottom', 'title', 'intro_subtitle', 'intro_text', 'subtitle', 'image',
+    'card_title', 'card_text', 'card_details', 'card_image', 'card_url',
+    'gift_title', 'gift_text', 'gift_url', 'gift_details', 'gift_image',
     'tradicional_title', 'tradicional_desc', 'tradicional_image',
     'recurvo_title', 'recurvo_desc', 'recurvo_image',
     'compuesto_title', 'compuesto_desc', 'compuesto_image',

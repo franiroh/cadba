@@ -25,9 +25,14 @@ export async function uploadImage(formData) {
   const file = formData.get('file');
   const path = formData.get('path'); // e.g. "home/hero/bg.png"
   
+  const arrayBuffer = await file.arrayBuffer();
+
   const { data, error } = await supabase.storage
     .from('site-assets')
-    .upload(path, file, { upsert: true });
+    .upload(path, arrayBuffer, { 
+      upsert: true,
+      contentType: file.type
+    });
 
   if (error) {
     console.error('Error uploading image:', error);
