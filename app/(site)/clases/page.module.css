@@ -134,8 +134,12 @@
 }
 
 @media (max-width: 1024px) {
-  .contentWrap, .contentWrapReverse {
+  .contentWrap {
     flex-direction: column;
+    gap: 40px;
+  }
+  .contentWrapReverse {
+    flex-direction: column-reverse;
     gap: 40px;
   }
   .sectionWhite, .sectionGray {
