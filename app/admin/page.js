@@ -40,12 +40,46 @@ export default function Admin() {
     setSaving(null);
   }
 
+  const processFavicon = (file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const size = 192;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          
+          ctx.clearRect(0, 0, size, size);
+          const minDim = Math.min(img.width, img.height);
+          const startX = (img.width - minDim) / 2;
+          const startY = (img.height - minDim) / 2;
+          
+          ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, size, size);
+          
+          canvas.toBlob((blob) => {
+            const newFile = new File([blob], 'favicon.png', { type: 'image/png' });
+            resolve(newFile);
+          }, 'image/png');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
   async function handleImageUpload(e, item) {
-    const file = e.target.files[0];
+    let file = e.target.files[0];
     if (!file) return;
 
     setUploading(item.id);
     
+    if (item.key === 'favicon') {
+      file = await processFavicon(file);
+    }
+
     const formData = new FormData();
     formData.append('file', file);
     
@@ -155,7 +189,10 @@ export default function Admin() {
     'contacto/gracias/subtitle': 'Mensaje (Página de Gracias)',
     'contacto/gracias/btn_text': 'Botón (Página de Gracias)',
     
-    // Marketing
+    // Marketing & SEO
+    'marketing/seo/site_title': 'Título del Navegador (SEO)',
+    'marketing/seo/site_description': 'Descripción del sitio (SEO)',
+    'marketing/seo/favicon': 'Favicon (Icono de pestaña)',
     'marketing/general/ga_id': 'Google Analytics ID (G-XXXXX)',
     'marketing/general/gtm_id': 'Google Tag Manager ID (GTM-XXXXX)',
     'marketing/general/meta_pixel_id': 'Meta Pixel ID',
@@ -187,11 +224,12 @@ export default function Admin() {
     'info': 'Ubicación y Contacto (Home)',
     'footer': 'Pie de Página (Footer)',
     'gracias': 'Página de Éxito (Gracias)',
+    'seo': 'SEO y Metadatos',
     'general': 'Configuración General',
     'custom': 'Scripts Personalizados'
   };
 
-  const sectionOrder = ['general', 'navbar', 'whatsapp', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'gracias', 'custom', 'footer'];
+  const sectionOrder = ['general', 'seo', 'navbar', 'whatsapp', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'gracias', 'custom', 'footer'];
 
   const keyOrder = [
     'title_top', 'title_accent', 'title_bottom', 'title', 'intro_subtitle', 'intro_text', 'subtitle', 'image',
@@ -204,7 +242,7 @@ export default function Admin() {
     'label_location', 'location', 'label_hours', 'hours', 'label_phone', 'phone', 'email',
     'primary_btn', 'primary_url', 'secondary_btn', 'secondary_url', 
     'text', 'details', 'btn_text', 'btn_url',
-    'contact_email', 'ga_id', 'gtm_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
+    'contact_email', 'site_title', 'site_description', 'favicon', 'ga_id', 'gtm_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
   ];
 
   if (loading) return <div className={styles.loading}><Loader2 className={styles.spin} /> Cargando panel...</div>;
@@ -334,6 +372,7 @@ export default function Admin() {
                             <div className={styles.imageMeta}>
                               <div className={styles.dimensionBadge}>
                                 Medida recomendada: {
+                                  item.key === 'favicon' ? 'Se adaptará a 192x192px (PNG)' :
                                   (item.section === 'hero' && item.key === 'image') ? '1920x1080px' :
                                   (item.section === 'clases' && item.key === 'card_image') ? '800x600px' :
                                   item.key.includes('image') ? '800x600px' : 'Libre'

@@ -2,10 +2,17 @@ import Script from 'next/script';
 import { getSiteContent } from "@/utils/cms";
 import "./globals.css";
 
-export const metadata = {
-  title: "CAdBA | Club de Arquería de Buenos Aires",
-  description: "Club de Tiro con Arco en Buenos Aires. Un espacio para aprender y practicar con la guía de instructores certificados FATARCO.",
-};
+export async function generateMetadata() {
+  const marketing = await getSiteContent('marketing');
+  
+  return {
+    title: marketing.seo?.site_title || "CAdBA | Club de Arquería de Buenos Aires",
+    description: marketing.seo?.site_description || "Club de Tiro con Arco en Buenos Aires. Un espacio para aprender y practicar con la guía de instructores certificados FATARCO.",
+    icons: {
+      icon: marketing.seo?.favicon || '/favicon.ico',
+    }
+  };
+}
 
 export default async function RootLayout({ children }) {
   const marketing = await getSiteContent('marketing');
