@@ -3,8 +3,8 @@ import { getSiteContent } from "@/utils/cms";
 import "./globals.css";
 
 export const metadata = {
-  title: "CAdBA - Club de Arqueros de Buenos Aires",
-  description: "Club de Tiro con Arco en Buenos Aires. Un espacio para aprender y practicar con los mejores instructores.",
+  title: "CAdBA | Club de Arquería de Buenos Aires",
+  description: "Club de Tiro con Arco en Buenos Aires. Un espacio para aprender y practicar con la guía de instructores certificados FATARCO.",
 };
 
 export default async function RootLayout({ children }) {
