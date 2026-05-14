@@ -126,12 +126,29 @@
 @media (max-width: 768px) {
   .formSection {
     padding: 60px 24px;
-    gap: 40px;
+    gap: 24px;
+    flex-direction: column;
   }
-  .formCol {
-    padding: 32px;
+  .infoCol {
+    display: contents;
   }
   .title {
     font-size: 36px;
+    order: 1;
+    margin-bottom: 0;
+  }
+  .subtitle {
+    order: 2;
+    margin-bottom: 8px;
+  }
+  .formCol {
+    order: 3;
+    padding: 32px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .contactDetails {
+    order: 4;
+    width: 100%;
   }
 }
