@@ -267,8 +267,8 @@
 }
 
 .iniciacionCard {
-  flex: 1;
-  min-width: 600px;
+  flex: 2;
+  min-width: 450px;
   background-color: var(--surface-secondary);
   border-radius: 12px;
   display: flex;
@@ -276,53 +276,53 @@
 }
 
 .iniImg {
-  width: 40%;
+  width: 35%;
   background-image: url('/images/generated-1777764271413.png');
   background-size: cover;
   background-position: center;
 }
 
 .iniCont {
-  padding: 40px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   flex: 1;
 }
 
 .cardTitleSecondary {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--accent-primary);
 }
 
 .cardP {
-  font-size: 15px;
+  font-size: 14.5px;
   color: var(--foreground-secondary);
   line-height: 1.5;
 }
 
 .cardList {
   list-style: none;
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--foreground-secondary);
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .btnSecondary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 24px;
+  padding: 10px 20px;
   background-color: var(--accent-secondary);
   color: #FFFFFF;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   border: none;
   cursor: pointer;
   align-self: flex-start;
@@ -334,29 +334,30 @@
 }
 
 .giftCard {
-  width: 380px;
+  flex: 1;
+  min-width: 300px;
   background-color: var(--accent-primary);
   border-radius: 12px;
-  padding: 48px 40px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 24px;
+  gap: 20px;
 }
 
 .giftIconWrap {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .giftTitle {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   color: #FFFFFF;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .giftP {
-  font-size: 15px;
+  font-size: 14px;
   color: rgba(255,255,255,0.9);
   line-height: 1.5;
 }
@@ -519,18 +520,6 @@
   .clasesSec, .estilosSec, .infoSec {
     padding: 60px 0;
   }
-  .iniciacionCard {
-    min-width: 100%;
-    flex-direction: column;
-  }
-  .iniImg {
-    width: 100%;
-    height: 250px;
-  }
-  .giftCard {
-    width: 100%;
-    padding: 40px 24px;
-  }
   .infoBox {
     flex-direction: column-reverse;
   }
@@ -543,5 +532,24 @@
     flex-direction: row-reverse;
     justify-content: flex-start;
     text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroContentWrap, .sectionContent {
+    padding: 24px;
+  }
+  .iniciacionCard {
+    min-width: 100%;
+    flex-direction: column;
+  }
+  .iniImg {
+    width: 100%;
+    height: 220px;
+  }
+  .giftCard {
+    width: 100%;
+    min-width: 100%;
+    padding: 32px 24px;
   }
 }
