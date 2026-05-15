@@ -31,10 +31,25 @@ export default function ContactForm({ destinationEmail }) {
       if (response.ok) {
         router.push('/gracias');
       } else {
-        alert("Hubo un error al enviar el mensaje. Por favor intenta de nuevo.");
+        // Si no responde OK (ej: 400 Bad Request), probablemente requiera activación.
+        throw new Error("FormSubmit requiere activación o captcha");
       }
     } catch (error) {
-      alert("Hubo un error de conexión. Por favor intenta de nuevo.");
+      console.warn("El envío AJAX falló. Redirigiendo a envío normal para activación de email...", error);
+      // Fallback a envío de formulario normal (sin AJAX)
+      // Esto permite que FormSubmit muestre su página de "Check your email"
+      const form = e.target;
+      form.action = `https://formsubmit.co/${email}`;
+      form.method = "POST";
+      
+      // Agregamos el subject que se enviaba en el JSON
+      const subjectInput = document.createElement("input");
+      subjectInput.type = "hidden";
+      subjectInput.name = "_subject";
+      subjectInput.value = "Nuevo mensaje de contacto web";
+      form.appendChild(subjectInput);
+
+      form.submit();
     } finally {
       setIsSubmitting(false);
     }

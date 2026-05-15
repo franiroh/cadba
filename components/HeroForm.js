@@ -31,10 +31,21 @@ export default function HeroForm({ destinationEmail, styles }) {
       if (response.ok) {
         router.push('/gracias');
       } else {
-        alert("Hubo un error al enviar el mensaje. Por favor intenta de nuevo.");
+        throw new Error("FormSubmit requiere activación o captcha");
       }
     } catch (error) {
-      alert("Hubo un error de conexión. Por favor intenta de nuevo.");
+      console.warn("El envío AJAX falló. Redirigiendo a envío normal para activación de email...", error);
+      const form = e.target;
+      form.action = `https://formsubmit.co/${email}`;
+      form.method = "POST";
+      
+      const subjectInput = document.createElement("input");
+      subjectInput.type = "hidden";
+      subjectInput.name = "_subject";
+      subjectInput.value = "Nuevo mensaje de contacto rápido (Portada web)";
+      form.appendChild(subjectInput);
+
+      form.submit();
     } finally {
       setIsSubmitting(false);
     }
