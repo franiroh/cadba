@@ -16,6 +16,9 @@ export default function HeroForm({ destinationEmail, styles }) {
     
     // Honeypot check manual por las dudas
     if (e.target._honey.value) {
+      // Simular éxito para el bot, pero sin enviar el correo ni redirigir a /gracias
+      // Esto evita que las campañas (Google Ads, Meta) lo cuenten como conversión.
+      e.target.reset();
       setIsSubmitting(false);
       return;
     }
