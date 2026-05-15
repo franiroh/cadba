@@ -12,6 +12,7 @@ export default function Navbar({ content }) {
       <div className={styles.links}>
         <Link href="/" className={styles.link}>Inicio</Link>
         <Link href="/clases" className={styles.link}>Clases</Link>
+        <Link href="/contacto" className={styles.link}>Contacto</Link>
         <Link href={content?.btn_url || '/contacto'} className={styles.button}>
           {content?.btn_text || 'Reservá tu clase'}
         </Link>
