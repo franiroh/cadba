@@ -32,27 +32,15 @@
   gap: 16px;
 }
 
-.infoBlockCenter {
+.infoColumn {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .textStack {
   display: flex;
   flex-direction: column;
-}
-
-.infoStackRight {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .icon {
