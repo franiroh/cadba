@@ -5,13 +5,12 @@
 
 /* HERO SECTION */
 .heroSec {
-  min-height: 500px;
   background-image: url('/images/generated-1777763987465.png');
   background-size: cover;
   background-position: center;
   position: relative;
   display: flex;
-  padding: 40px 0;
+  padding: 80px 0 60px 0;
 }
 
 .heroOverlayGradient {
@@ -229,11 +228,12 @@
   font-size: 32px;
   font-weight: 700;
   color: var(--accent-primary);
+  margin: 0;
 }
 
 /* CLASES SECTION */
 .clasesSec {
-  padding: 60px 0;
+  padding: 40px 0 80px 0;
   display: flex;
 }
 
@@ -251,7 +251,7 @@
   font-size: 18px;
   font-weight: 700;
   color: var(--accent-primary);
-  margin-bottom: 8px;
+  margin: 0 0 8px 0;
 }
 
 .introP {
@@ -364,7 +364,7 @@
 
 /* ESTILOS SECTION */
 .estilosSec {
-  padding: 60px 0;
+  padding: 80px 0;
   background-color: var(--surface-secondary);
   display: flex;
 }
@@ -426,7 +426,7 @@
 
 /* INFO SECTION */
 .infoSec {
-  padding: 60px 0 100px 0;
+  padding: 80px 0 100px 0;
   display: flex;
 }
 
