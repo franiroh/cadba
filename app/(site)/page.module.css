@@ -305,7 +305,7 @@
 
 .cardList {
   list-style: none;
-  font-size: 15px;
+  font-size: 13.5px;
   color: var(--foreground-secondary);
   display: flex;
   flex-direction: column;
