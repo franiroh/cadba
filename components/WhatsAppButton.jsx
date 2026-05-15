@@ -1,8 +1,53 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import styles from './WhatsAppButton.module.css';
 
 export default function WhatsAppButton({ content }) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Si no hay configuración o está vacía, mostrar por defecto siempre
+    const activeDaysStr = content?.active_days || "0,1,2,3,4,5,6";
+    const startTime = content?.active_hours_start || "00:00";
+    const endTime = content?.active_hours_end || "23:59";
+    
+    try {
+      const activeDays = activeDaysStr.split(',').map(d => parseInt(d.trim()));
+      
+      // Obtener la hora actual de Argentina
+      const argTimeOptions = { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', hour12: false };
+      const timeParts = new Intl.DateTimeFormat('en-US', argTimeOptions).format(new Date()).split(':');
+      
+      // Manejar formato a veces devuelve '24' para medianoche
+      let currentHour = parseInt(timeParts[0]);
+      if (currentHour === 24) currentHour = 0;
+      const currentMin = parseInt(timeParts[1]);
+      const currentTimeMinutes = currentHour * 60 + currentMin;
+
+      // Obtener el día actual en Argentina
+      const argDateOptions = { timeZone: 'America/Argentina/Buenos_Aires', weekday: 'long' };
+      const currentWeekday = new Intl.DateTimeFormat('en-US', argDateOptions).format(new Date());
+      const daysMap = { 'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6 };
+      const currentDay = daysMap[currentWeekday];
+      
+      const startParts = startTime.split(':');
+      const startMinutes = parseInt(startParts[0]) * 60 + parseInt(startParts[1] || 0);
+      
+      const endParts = endTime.split(':');
+      const endMinutes = parseInt(endParts[0]) * 60 + parseInt(endParts[1] || 0);
+      
+      if (activeDays.includes(currentDay) && currentTimeMinutes >= startMinutes && currentTimeMinutes <= endMinutes) {
+        setIsVisible(true);
+      }
+    } catch (error) {
+      console.error("Error parseando horario de WhatsApp:", error);
+      setIsVisible(true); // Mostrar por defecto si falla algo
+    }
+  }, [content]);
+
+  if (!isVisible) return null;
+
   const phoneNumber = content?.phone || "5491162329424";
   const message = content?.message || "Hola, me gustaría recibir más información sobre las clases de arquería.";
   const label = content?.label || "Consultar por WhatsApp";

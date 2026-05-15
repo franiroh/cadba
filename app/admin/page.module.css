@@ -354,3 +354,45 @@
   color: var(--accent-primary);
   background-color: #f8fafc;
 }
+
+.daysSelector {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.dayCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.dayCheckbox input {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-primary);
+}
+
+.timeInput {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-family: inherit;
+  font-size: 15px;
+  background-color: #ffffff;
+  color: #1e293b;
+  width: 140px;
+  font-weight: 500;
+}
+
+.timeInput:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 4px rgba(112, 96, 171, 0.1);
+}

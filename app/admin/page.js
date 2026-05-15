@@ -7,6 +7,48 @@ import styles from './page.module.css';
 import { Save, Image as ImageIcon, Layout, ArrowLeft, Home, BookOpen, Mail, Upload, Loader2, CheckCircle, Shield } from 'lucide-react';
 import Link from 'next/link';
 
+const DaysSelector = ({ item, handleSave }) => {
+  const days = [
+    { id: 1, label: 'Lun' },
+    { id: 2, label: 'Mar' },
+    { id: 3, label: 'Mié' },
+    { id: 4, label: 'Jue' },
+    { id: 5, label: 'Vie' },
+    { id: 6, label: 'Sáb' },
+    { id: 0, label: 'Dom' },
+  ];
+  
+  const [selectedDays, setSelectedDays] = useState(
+    item.content ? item.content.split(',').map(n => parseInt(n.trim())) : [0,1,2,3,4,5,6]
+  );
+
+  const toggleDay = (id) => {
+    let newDays;
+    if (selectedDays.includes(id)) {
+      newDays = selectedDays.filter(d => d !== id);
+    } else {
+      newDays = [...selectedDays, id];
+    }
+    setSelectedDays(newDays);
+    handleSave(item.id, newDays.join(','));
+  };
+
+  return (
+    <div className={styles.daysSelector}>
+      {days.map(d => (
+        <label key={d.id} className={styles.dayCheckbox}>
+          <input 
+            type="checkbox" 
+            checked={selectedDays.includes(d.id)} 
+            onChange={() => toggleDay(d.id)} 
+          />
+          {d.label}
+        </label>
+      ))}
+    </div>
+  );
+};
+
 export default function Admin() {
   const supabase = createClient();
   const [content, setContent] = useState([]);
@@ -211,6 +253,9 @@ export default function Admin() {
     'whatsapp/phone': 'Número de WhatsApp (con código de país)',
     'whatsapp/message': 'Mensaje Pre-escrito',
     'whatsapp/label': 'Texto del Botón Flotante',
+    'whatsapp/active_days': 'Días activos (0=Dom, 1=Lun, 2=Mar... separados por coma)',
+    'whatsapp/active_hours_start': 'Horario de inicio (HH:MM)',
+    'whatsapp/active_hours_end': 'Horario de fin (HH:MM)',
   };
 
   const sectionLabels = {
@@ -243,6 +288,7 @@ export default function Admin() {
     'label_location', 'location', 'label_hours', 'hours', 'label_phone', 'phone', 'email',
     'primary_btn', 'primary_url', 'secondary_btn', 'secondary_url', 
     'text', 'details', 'btn_text', 'btn_url',
+    'active_days', 'active_hours_start', 'active_hours_end',
     'contact_email', 'site_title', 'site_description', 'favicon', 'ga_id', 'gtm_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
   ];
 
@@ -350,7 +396,20 @@ export default function Admin() {
                       </div>
                       
                       <div className={styles.cardBody}>
-                        {item.content_type === 'text' ? (
+                        {item.key === 'active_days' ? (
+                          <DaysSelector item={item} handleSave={handleSave} />
+                        ) : item.key === 'active_hours_start' || item.key === 'active_hours_end' ? (
+                          <input 
+                            type="time" 
+                            className={styles.timeInput}
+                            defaultValue={item.content}
+                            onBlur={(e) => {
+                              if (e.target.value !== item.content) {
+                                handleSave(item.id, e.target.value);
+                              }
+                            }}
+                          />
+                        ) : item.content_type === 'text' ? (
                           <textarea 
                             className={styles.textarea}
                             defaultValue={item.content}
