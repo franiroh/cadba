@@ -63,6 +63,21 @@ export async function sendContactEmail(formData) {
   const destinationEmail = formData.get('destinationEmail');
 
   try {
+    // 1. Guardar en la base de datos de Supabase
+    const supabase = await createClient();
+    const { error: dbError } = await supabase.from('contact_messages').insert([{
+      name: name,
+      email: email,
+      message: message,
+      source: subject
+    }]);
+
+    if (dbError) {
+      console.error("Error guardando el mensaje en la base de datos:", dbError);
+      // Opcional: decidimos continuar con el envío del email aunque falle la base de datos
+    }
+
+    // 2. Enviar email vía Resend
     const data = await resend.emails.send({
       from: 'CAdBA <onboarding@resend.dev>', // Dominio de prueba, cuando verifiques tu dominio podés cambiarlo a ej: hola@cadba.com.ar
       to: destinationEmail,
