@@ -57,19 +57,22 @@ export default function ContactForm({ destinationEmail }) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {/* Honeypot field para evitar bots */}
+      <input type="text" name="_honey" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
+
       <div className={styles.inputGroup}>
         <label htmlFor="name">Nombre Completo</label>
-        <input type="text" id="name" name="name" required placeholder="Tu nombre" />
+        <input type="text" id="name" name="name" required placeholder="Tu nombre" maxLength="100" />
       </div>
       
       <div className={styles.inputGroup}>
         <label htmlFor="email">Correo Electrónico</label>
-        <input type="email" id="email" name="email" required placeholder="tu@email.com" />
+        <input type="email" id="email" name="email" required placeholder="tu@email.com" maxLength="150" />
       </div>
       
       <div className={styles.inputGroup}>
         <label htmlFor="message">Mensaje</label>
-        <textarea id="message" name="message" rows="5" required placeholder="¿En qué podemos ayudarte?"></textarea>
+        <textarea id="message" name="message" rows="5" required placeholder="¿En qué podemos ayudarte?" maxLength="1500"></textarea>
       </div>
       
       <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>

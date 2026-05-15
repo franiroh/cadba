@@ -53,17 +53,20 @@ export default function HeroForm({ destinationEmail, styles }) {
 
   return (
     <form className={styles.heroForm} onSubmit={handleSubmit}>
+      {/* Honeypot field para evitar bots */}
+      <input type="text" name="_honey" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
+      
       <div className={styles.inputWrap}>
         <User size={18} className={styles.inputIcon} />
-        <input type="text" name="name" placeholder="Nombre" className={styles.inputField} required />
+        <input type="text" name="name" placeholder="Nombre" className={styles.inputField} required maxLength="100" />
       </div>
       <div className={styles.inputWrap}>
         <Mail size={18} className={styles.inputIcon} />
-        <input type="email" name="email" placeholder="Email" className={styles.inputField} required />
+        <input type="email" name="email" placeholder="Email" className={styles.inputField} required maxLength="150" />
       </div>
       <div className={styles.inputWrap}>
         <MessageSquare size={18} className={styles.inputIcon} />
-        <textarea name="message" placeholder="Mensaje" className={styles.inputField} rows={3} required></textarea>
+        <textarea name="message" placeholder="Mensaje" className={styles.inputField} rows={3} required maxLength="1500"></textarea>
       </div>
       <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
         {isSubmitting ? 'Enviando...' : (
