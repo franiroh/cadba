@@ -47,7 +47,11 @@ export default async function Home() {
               <div className={styles.formBar}></div>
               <h3 className={styles.formTitle}>{content.hero?.form_title || 'Consultanos por tu clase'}</h3>
             </div>
-            <HeroForm destinationEmail={contactContent.general?.contact_email} styles={styles} />
+            <HeroForm 
+              destinationEmail={contactContent.general?.contact_email} 
+              submitText={content.hero?.form_submit}
+              styles={styles} 
+            />
           </div>
 
         </div>

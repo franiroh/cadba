@@ -147,6 +147,7 @@ export default function Admin() {
     'hero/image': 'Imagen de fondo (Hero)',
     'hero/location': 'Texto de Ubicación (Hero)',
     'hero/form_title': 'Título del Formulario (Hero)',
+    'hero/form_submit': 'Texto del Botón (Formulario Hero)',
     'hero/primary_btn': 'Texto Botón Reservar',
     'hero/primary_url': 'Link Botón Reservar',
     'hero/secondary_btn': 'Texto Botón Regalar',
@@ -280,7 +281,7 @@ export default function Admin() {
   const sectionOrder = ['general', 'seo', 'navbar', 'whatsapp', 'hero', 'iniciacion', 'practica', 'gift', 'clases', 'estilos', 'info', 'gracias', 'custom', 'footer'];
 
   const keyOrder = [
-    'title_top', 'title_accent', 'title_bottom', 'title', 'intro_subtitle', 'intro_text', 'subtitle', 'image', 'form_title',
+    'title_top', 'title_accent', 'title_bottom', 'title', 'intro_subtitle', 'intro_text', 'subtitle', 'image', 'form_title', 'form_submit',
     'card_title', 'card_text', 'card_details', 'card_image', 'card_url',
     'gift_title', 'gift_text', 'gift_url', 'gift_details', 'gift_image',
     'tradicional_title', 'tradicional_desc', 'tradicional_image',
@@ -382,7 +383,7 @@ export default function Admin() {
                 
                 <div className={styles.contentGrid}>
                   {sortItems(filteredContent.filter(item => item.section === section)).map(item => (
-                    <div key={item.id} className={`${styles.card} ${item.key.startsWith('title_') ? styles.fullWidth : ''}`}>
+                    <div key={item.id} className={`${styles.card} ${(item.key.startsWith('title_') || item.key === 'form_title') ? styles.fullWidth : ''}`}>
                       <div className={styles.cardHeader}>
                         <div className={styles.labelGroup}>
                           <span className={styles.fieldLabel}>{keyLabels[`${item.page}/${item.section}/${item.key}`] || keyLabels[`${item.section}/${item.key}`] || keyLabels[item.key] || 'Campo'}</span>

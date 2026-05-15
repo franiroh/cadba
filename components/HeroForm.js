@@ -79,10 +79,10 @@ export default function HeroForm({ destinationEmail, styles }) {
         <MessageSquare size={18} className={styles.inputIcon} />
         <textarea name="message" placeholder="Mensaje" className={styles.inputField} rows={3} required maxLength="1500"></textarea>
       </div>
-      <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+    <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
         {isSubmitting ? 'Enviando...' : (
           <>
-            Enviar consulta <ArrowRight size={16} />
+            {submitText || 'Enviar consulta'} <ArrowRight size={16} />
           </>
         )}
       </button>
