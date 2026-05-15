@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { User, Mail, MessageSquare, ArrowRight } from 'lucide-react';
 import { sendContactEmail } from '@/app/actions';
 
-export default function HeroForm({ destinationEmail, styles }) {
+export default function HeroForm({ destinationEmail, submitText, styles }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const email = destinationEmail || 'tu-email@ejemplo.com';
