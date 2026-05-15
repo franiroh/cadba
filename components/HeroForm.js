@@ -27,10 +27,29 @@ export default function HeroForm({ destinationEmail, styles }) {
 
       const result = await sendContactEmail(formData);
       
-      if (result.success) {
+      // 2. Enviar email vía Web3Forms directo desde el cliente
+      const web3Response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+          name: e.target.name.value,
+          email: e.target.email.value,
+          message: e.target.message.value,
+          subject: "Nuevo mensaje de contacto rápido (Portada web)",
+          from_name: "CAdBA Website"
+        }),
+      });
+
+      const web3Data = await web3Response.json();
+      
+      if (web3Data.success) {
         router.push('/gracias');
       } else {
-        alert("Hubo un error al enviar el mensaje: " + result.error);
+        alert("Hubo un error al enviar el mensaje: " + (web3Data.message || "Revisá tu conexión."));
       }
     } catch (error) {
       console.error(error);

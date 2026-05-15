@@ -71,33 +71,7 @@ export async function sendContactEmail(formData) {
 
     if (dbError) {
       console.error("Error guardando el mensaje en la base de datos:", dbError);
-      // Opcional: decidimos continuar con el envío del email aunque falle la base de datos
-    }
-
-    // 2. Enviar email vía Web3Forms
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        Origin: "https://cadba.com.ar",
-        Referer: "https://cadba.com.ar/"
-      },
-      body: JSON.stringify({
-        access_key: process.env.WEB3FORMS_ACCESS_KEY,
-        name: name,
-        email: email,
-        message: message,
-        subject: subject,
-        from_name: "CAdBA Website"
-      }),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      return { success: false, error: result.message || "Error al enviar correo con Web3Forms" };
+      return { success: false, error: dbError.message };
     }
 
     return { success: true };
