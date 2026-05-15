@@ -231,6 +231,7 @@ export default function Admin() {
     'contacto/gracias/title': 'Título (Página de Gracias)',
     'contacto/gracias/subtitle': 'Mensaje (Página de Gracias)',
     'contacto/gracias/btn_text': 'Botón (Página de Gracias)',
+    'contacto/gracias/conversion_scripts': 'Scripts de Conversión (Pixels de Gracias)',
     
     // Marketing & SEO
     'marketing/seo/site_title': 'Título del Navegador (SEO)',
@@ -287,7 +288,7 @@ export default function Admin() {
     'raso_title', 'raso_desc', 'raso_image',
     'label_location', 'location', 'label_hours', 'hours', 'label_phone', 'phone', 'email',
     'primary_btn', 'primary_url', 'secondary_btn', 'secondary_url', 
-    'text', 'details', 'btn_text', 'btn_url',
+    'text', 'details', 'btn_text', 'btn_url', 'conversion_scripts',
     'active_days', 'active_hours_start', 'active_hours_end',
     'contact_email', 'site_title', 'site_description', 'favicon', 'ga_id', 'gtm_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
   ];

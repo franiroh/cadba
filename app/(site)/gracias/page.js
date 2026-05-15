@@ -8,6 +8,9 @@ export default async function Gracias() {
 
   return (
     <div className={styles.container}>
+      {data.conversion_scripts && (
+        <div dangerouslySetInnerHTML={{ __html: data.conversion_scripts }} />
+      )}
       <section className={styles.content}>
         <div className={styles.iconContainer}>
           <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
