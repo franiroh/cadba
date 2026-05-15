@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, Mail, MessageSquare, ArrowRight } from 'lucide-react';
+import { sendContactEmail } from '@/app/actions';
 
 export default function HeroForm({ destinationEmail, styles }) {
   const router = useRouter();
@@ -13,39 +14,27 @@ export default function HeroForm({ destinationEmail, styles }) {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // Honeypot check manual por las dudas
+    if (e.target._honey.value) {
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      const response = await fetch(`https://formsubmit.co/ajax/${email}`, {
-        method: "POST",
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            name: e.target.name.value,
-            email: e.target.email.value,
-            message: e.target.message.value,
-            _subject: "Nuevo mensaje de contacto rápido (Portada web)"
-        })
-      });
+      const formData = new FormData(e.target);
+      formData.append('destinationEmail', email);
+      formData.append('_subject', "Nuevo mensaje de contacto rápido (Portada web)");
+
+      const result = await sendContactEmail(formData);
       
-      if (response.ok) {
+      if (result.success) {
         router.push('/gracias');
       } else {
-        throw new Error("FormSubmit requiere activación o captcha");
+        alert("Hubo un error al enviar el mensaje: " + result.error);
       }
     } catch (error) {
-      console.warn("El envío AJAX falló. Redirigiendo a envío normal para activación de email...", error);
-      const form = e.target;
-      form.action = `https://formsubmit.co/${email}`;
-      form.method = "POST";
-      
-      const subjectInput = document.createElement("input");
-      subjectInput.type = "hidden";
-      subjectInput.name = "_subject";
-      subjectInput.value = "Nuevo mensaje de contacto rápido (Portada web)";
-      form.appendChild(subjectInput);
-
-      form.submit();
+      console.error(error);
+      alert("Hubo un error de conexión al enviar el correo. Por favor intenta de nuevo.");
     } finally {
       setIsSubmitting(false);
     }
