@@ -2,9 +2,6 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function updateContent(id, newContent) {
   const supabase = await createClient();
@@ -77,23 +74,27 @@ export async function sendContactEmail(formData) {
       // Opcional: decidimos continuar con el envío del email aunque falle la base de datos
     }
 
-    // 2. Enviar email vía Resend
-    const data = await resend.emails.send({
-      from: 'CAdBA <onboarding@resend.dev>', // Dominio de prueba, cuando verifiques tu dominio podés cambiarlo a ej: hola@cadba.com.ar
-      to: destinationEmail,
-      subject: subject,
-      replyTo: email,
-      html: `
-        <h2>${subject}</h2>
-        <p><strong>Nombre:</strong> ${name}</p>
-        <p><strong>Email (Remitente):</strong> ${email}</p>
-        <p><strong>Mensaje:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-      `
+    // 2. Enviar email vía Web3Forms
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        access_key: process.env.WEB3FORMS_ACCESS_KEY,
+        name: name,
+        email: email,
+        message: message,
+        subject: subject,
+        from_name: "CAdBA Website"
+      }),
     });
 
-    if (data.error) {
-      return { success: false, error: data.error.message };
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      return { success: false, error: result.message || "Error al enviar correo con Web3Forms" };
     }
 
     return { success: true };
