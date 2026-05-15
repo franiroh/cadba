@@ -239,6 +239,7 @@ export default function Admin() {
     'marketing/seo/favicon': 'Favicon (Icono de pestaña)',
     'marketing/general/ga_id': 'Google Analytics ID (G-XXXXX)',
     'marketing/general/gtm_id': 'Google Tag Manager ID (GTM-XXXXX)',
+    'marketing/general/google_ads_id': 'Google Ads ID (AW-XXXXX)',
     'marketing/general/meta_pixel_id': 'Meta Pixel ID',
     'marketing/custom/head_scripts': 'Scripts Personalizados (Head)',
     'marketing/custom/body_scripts': 'Scripts Personalizados (Body)',
@@ -290,7 +291,7 @@ export default function Admin() {
     'primary_btn', 'primary_url', 'secondary_btn', 'secondary_url', 
     'text', 'details', 'btn_text', 'btn_url', 'conversion_scripts',
     'active_days', 'active_hours_start', 'active_hours_end',
-    'contact_email', 'site_title', 'site_description', 'favicon', 'ga_id', 'gtm_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
+    'contact_email', 'site_title', 'site_description', 'favicon', 'ga_id', 'gtm_id', 'google_ads_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
   ];
 
   if (loading) return <div className={styles.loading}><Loader2 className={styles.spin} /> Cargando panel...</div>;

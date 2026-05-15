@@ -42,23 +42,27 @@ export default async function RootLayout({ children }) {
           </>
         )}
 
-        {/* Google Ads (AW-18115188328) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-18115188328"
-          strategy="afterInteractive"
-        />
-        <Script
-          id="google-ads-script"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'AW-18115188328');
-            `,
-          }}
-        />
+        {/* Google Ads */}
+        {marketing.general?.google_ads_id && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${marketing.general.google_ads_id}`}
+              strategy="afterInteractive"
+            />
+            <Script
+              id="google-ads-script"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${marketing.general.google_ads_id}');
+                `,
+              }}
+            />
+          </>
+        )}
 
         {/* Meta Pixel */}
         {marketing.general?.meta_pixel_id && (
