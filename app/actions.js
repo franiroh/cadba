@@ -48,8 +48,21 @@ export async function uploadImage(formData) {
 }
 
 export async function sendContactEmail(formData) {
-  // Honeypot check
-  if (formData.get('_honey')) {
+  // Honeypot check — log the bot submission before returning fake success
+  const honeypotValue = formData.get('_honey');
+  if (honeypotValue) {
+    try {
+      const supabase = await createClient();
+      await supabase.from('bot_submissions').insert([{
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message'),
+        honeypot_value: honeypotValue,
+        source: formData.get('_subject') || 'contacto',
+      }]);
+    } catch (_) {
+      // Silently fail — never expose errors to bots
+    }
     return { success: true }; // Fake success for bots
   }
 
