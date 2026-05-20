@@ -54,12 +54,21 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
   const [isEditingFooter, setIsEditingFooter] = useState(false);
 
   // Helper: persistent save with visual spinner
-  const saveSchedule = async (updatedList, updatedMain = mainTitle, updatedSub = subTitle, updatedFooter = footerText) => {
+  const saveSchedule = async (
+    updatedList,
+    updatedMain = mainTitle,
+    updatedSub = subTitle,
+    updatedFooter = footerText,
+    updatedStartHour = gridStartHour,
+    updatedEndHour = gridEndHour
+  ) => {
     setIsSaving(true);
     const payload = {
       mainTitle: updatedMain,
       subTitle: updatedSub,
       footerText: updatedFooter,
+      gridStartHour: updatedStartHour,
+      gridEndHour: updatedEndHour,
       classes: updatedList
     };
     await handleSave(scheduleItem.id, JSON.stringify(payload));
@@ -79,6 +88,8 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
         let loadedMainTitle = 'CLUB DE ARQUEROS DE BUENOS AIRES';
         let loadedSubTitle = 'CRONOGRAMA DE CLASES Y HORARIOS SEMANALES';
         let loadedFooterText = 'Av. Vélez Sarsfield 268, Barracas, CABA';
+        let loadedStartHour = null;
+        let loadedEndHour = null;
 
         if (Array.isArray(parsed)) {
           loadedClasses = parsed;
@@ -91,29 +102,31 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
             loadedSubTitle = parsed.title;
           }
           loadedFooterText = parsed.footerText || 'Av. Vélez Sarsfield 268, Barracas, CABA';
+          // Restore saved grid hours if present
+          if (parsed.gridStartHour !== undefined) loadedStartHour = parsed.gridStartHour;
+          if (parsed.gridEndHour !== undefined)   loadedEndHour   = parsed.gridEndHour;
         }
 
         setClasses(loadedClasses);
         setMainTitle(loadedMainTitle);
         setSubTitle(loadedSubTitle);
         setFooterText(loadedFooterText);
-        
-        // Auto-adjust grid hours to fit classes if possible
-        if (loadedClasses.length > 0) {
-          let minH = 24;
-          let maxH = 0;
+
+        if (loadedStartHour !== null && loadedEndHour !== null) {
+          // Use the user's saved scale
+          setGridStartHour(loadedStartHour);
+          setGridEndHour(loadedEndHour);
+        } else if (loadedClasses.length > 0) {
+          // Fallback: auto-detect from class times (first load, no saved value yet)
+          let minH = 24, maxH = 0;
           loadedClasses.forEach(c => {
             const startH = parseInt(c.startTime.split(':')[0]);
             const endH = Math.ceil(parseFloat(c.endTime.split(':')[0]) + parseFloat(c.endTime.split(':')[1] || 0) / 60);
             if (startH < minH) minH = startH;
             if (endH > maxH) maxH = endH;
           });
-          
-          // Set sensible bounds based on loaded data
-          const newStart = Math.max(0, Math.min(8, minH - 1));
-          const newEnd = Math.min(24, Math.max(21, maxH + 1));
-          setGridStartHour(newStart);
-          setGridEndHour(newEnd);
+          setGridStartHour(Math.max(0, Math.min(8, minH - 1)));
+          setGridEndHour(Math.min(24, Math.max(21, maxH + 1)));
         }
       } catch (e) {
         console.error('Error parsing weekly schedule:', e);
@@ -638,7 +651,11 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
                   <select 
                     className={styles.select}
                     value={gridStartHour}
-                    onChange={(e) => setGridStartHour(parseInt(e.target.value))}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value);
+                      setGridStartHour(val);
+                      saveSchedule(classes, mainTitle, subTitle, footerText, val, gridEndHour);
+                    }}
                   >
                     {[0,1,2,3,4,5,6,7,8,9,10,11,12].map(h => (
                       <option key={h} value={h}>{h.toString().padStart(2, '0')}:00</option>
@@ -651,7 +668,11 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
                   <select 
                     className={styles.select}
                     value={gridEndHour}
-                    onChange={(e) => setGridEndHour(parseInt(e.target.value))}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value);
+                      setGridEndHour(val);
+                      saveSchedule(classes, mainTitle, subTitle, footerText, gridStartHour, val);
+                    }}
                   >
                     {[16,17,18,19,20,21,22,23,24].map(h => (
                       <option key={h} value={h}>{h.toString().padStart(2, '0')}:00</option>
