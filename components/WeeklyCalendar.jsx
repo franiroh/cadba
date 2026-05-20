@@ -281,30 +281,54 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
     const logoSrc = theme === 'dark' ? '/images/logo-blanco.png' : '/images/logo.png';
 
     const drawAll = (loadedLogo) => {
-      // ── A. Background ────────────────────────────────────────────────
-      ctx.fillStyle = bgColor;
+      // ── Palette (matches site globals.css) ───────────────────────────
+      const PURPLE       = '#7060ab';
+      const PURPLE_DARK  = '#5d4d9b';
+      const TEAL         = '#07cebb';
+      const BG           = isDark ? '#110e18' : '#ffffff';
+      const HEADER_BG    = isDark ? '#1c1728' : '#f5f2ff'; // light purple tint
+      const DAY_BAR_BG   = isDark ? '#1a1630' : '#ede9fb'; // slightly deeper purple tint
+      const DAY_TEXT     = isDark ? '#c4b8e8' : PURPLE;
+      const GRID_BG      = isDark ? '#13101f' : '#fdfcff';
+      const GRID_LINE    = isDark ? '#2d2540' : '#e8e4f3';
+      const HOUR_LINE    = isDark ? '#1c1728' : '#f1ecff';
+      const HOUR_TEXT    = isDark ? '#7060ab' : '#9b8ec4';
+      const TITLE_COLOR  = isDark ? '#ffffff'  : '#1e293b';
+      const SUB_COLOR    = isDark ? '#07cebb'  : TEAL;
+      const FOOT_COLOR   = isDark ? '#7060ab'  : '#9b8ec4';
+      const TIME_COL_BG  = isDark ? '#1a1630'  : '#f8f5ff';
+
+      // ── A. Full background ───────────────────────────────────────────
+      ctx.fillStyle = BG;
       ctx.fillRect(0, 0, W, H);
 
-      // ── B. Top accent bar ─────────────────────────────────────────────
-      ctx.fillStyle = '#07cebb';
+      // ── B. Top accent bar (turquoise) ────────────────────────────────
+      ctx.fillStyle = TEAL;
       ctx.fillRect(0, 0, W, ACCENT_H);
 
-      // ── C. Branding header zone (HEADER_Y → HEADER_Y+HEADER_H) ───────
-      ctx.fillStyle = headerBgColor;
+      // ── C. Header zone ───────────────────────────────────────────────
+      // Background
+      ctx.fillStyle = HEADER_BG;
       ctx.fillRect(0, HEADER_Y, W, HEADER_H);
 
-      const maxLogoH = HEADER_H - 20; // max height = header minus 10px padding top+bottom
-      const logoX = LEFT_PAD;
-      const logoY = HEADER_Y + 10;
+      // Left accent stripe (purple → turquoise gradient)
+      const grad = ctx.createLinearGradient(0, HEADER_Y, 0, HEADER_Y + HEADER_H);
+      grad.addColorStop(0, PURPLE);
+      grad.addColorStop(1, TEAL);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, HEADER_Y, 6, HEADER_H);
 
-      let drawnLogoW = 0; // will be set based on actual logo dimensions
+      // Logo
+      const maxLogoH = HEADER_H - 20;
+      const logoX    = LEFT_PAD;
+      const logoY    = HEADER_Y + 10;
+      let drawnLogoW = 0;
 
       if (loadedLogo) {
         try {
-          // Preserve aspect ratio: scale so height = maxLogoH
           const aspectRatio = loadedLogo.naturalWidth / loadedLogo.naturalHeight;
-          const logoDrawH = maxLogoH;
-          const logoDrawW = logoDrawH * aspectRatio;
+          const logoDrawH   = maxLogoH;
+          const logoDrawW   = logoDrawH * aspectRatio;
           ctx.drawImage(loadedLogo, logoX, logoY, logoDrawW, logoDrawH);
           drawnLogoW = logoDrawW;
         } catch (e) {
@@ -312,39 +336,50 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
         }
       }
 
-      // Title & subtitle to the right of logo (use actual drawn width)
+      // Titles
       const textX = LEFT_PAD + drawnLogoW + 40;
-      ctx.textAlign = 'left';
+      ctx.textAlign    = 'left';
       ctx.textBaseline = 'top';
 
-      ctx.fillStyle = textColorPrimary;
-      ctx.font = "bold 40px 'Inter', system-ui, -apple-system, sans-serif";
-      ctx.fillText(mainTitle.toUpperCase(), textX, HEADER_Y + 40);
+      ctx.fillStyle = TITLE_COLOR;
+      ctx.font      = `bold 42px 'Inter', system-ui, sans-serif`;
+      ctx.fillText(mainTitle.toUpperCase(), textX, HEADER_Y + 35);
 
-      ctx.fillStyle = textColorSecondary;
-      ctx.font = "600 20px 'Inter', system-ui, -apple-system, sans-serif";
+      ctx.fillStyle = SUB_COLOR;
+      ctx.font      = `700 20px 'Inter', system-ui, sans-serif`;
       ctx.fillText(subTitle.toUpperCase(), textX, HEADER_Y + 95);
 
-      // ── D. Day-of-week labels zone (DAY_Y → DAY_Y+DAY_H) ─────────────
-      ctx.fillStyle = dayBgColor;
+      // ── D. Time-column background strip ─────────────────────────────
+      ctx.fillStyle = TIME_COL_BG;
+      ctx.fillRect(0, DAY_Y, LEFT_PAD, DAY_H + GRID_H);
+
+      // ── E. Day-of-week labels zone ───────────────────────────────────
+      ctx.fillStyle = DAY_BAR_BG;
       ctx.fillRect(LEFT_PAD, DAY_Y, gridW, DAY_H);
 
-      const DAYS_OF_WEEK = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM'];
+      // Bottom border on day bar
+      ctx.strokeStyle = GRID_LINE;
+      ctx.lineWidth   = 2;
+      ctx.beginPath();
+      ctx.moveTo(LEFT_PAD, DAY_Y + DAY_H);
+      ctx.lineTo(LEFT_PAD + gridW, DAY_Y + DAY_H);
+      ctx.stroke();
 
-      ctx.textAlign = 'center';
+      const DAYS_LABELS = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM'];
+      ctx.textAlign    = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = textColorPrimary;
-      ctx.font = "bold 16px 'Inter', system-ui, -apple-system, sans-serif";
+      ctx.fillStyle    = DAY_TEXT;
+      ctx.font         = `800 16px 'Inter', system-ui, sans-serif`;
 
-      DAYS_OF_WEEK.forEach((label, idx) => {
+      DAYS_LABELS.forEach((label, idx) => {
         const x = LEFT_PAD + idx * colW + colW / 2;
         const y = DAY_Y + DAY_H / 2;
         ctx.fillText(label, x, y);
 
-        // Separator lines between day columns
+        // Column separator
         if (idx > 0) {
-          ctx.strokeStyle = gridLineColor;
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = GRID_LINE;
+          ctx.lineWidth   = 1;
           ctx.beginPath();
           ctx.moveTo(LEFT_PAD + idx * colW, DAY_Y);
           ctx.lineTo(LEFT_PAD + idx * colW, DAY_Y + DAY_H);
@@ -352,25 +387,30 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
         }
       });
 
-      // ── E. Calendar grid (GRID_Y → GRID_Y+GRID_H) ────────────────────
+      // ── F. Calendar grid background ──────────────────────────────────
+      ctx.fillStyle = GRID_BG;
+      ctx.fillRect(LEFT_PAD, GRID_Y, gridW, GRID_H);
+
       // Outer border
-      ctx.strokeStyle = gridLineColor;
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = GRID_LINE;
+      ctx.lineWidth   = 2;
       ctx.strokeRect(LEFT_PAD, GRID_Y, gridW, GRID_H);
 
-      // Horizontal hour lines + hour labels
+      // Hour lines + labels
       for (let h = gridStartHour; h <= gridEndHour; h++) {
         const y = GRID_Y + (h - gridStartHour) * rowH;
 
+        // Hour label (inside time column)
         if (h < gridEndHour) {
-          ctx.textAlign = 'right';
+          ctx.textAlign    = 'center';
           ctx.textBaseline = 'top';
-          ctx.fillStyle = textColorMuted;
-          ctx.font = "600 14px 'Inter', system-ui, -apple-system, sans-serif";
-          ctx.fillText(`${h.toString().padStart(2, '0')}:00`, LEFT_PAD - 12, y + 4);
+          ctx.fillStyle    = HOUR_TEXT;
+          ctx.font         = `600 13px 'Inter', system-ui, sans-serif`;
+          ctx.fillText(`${h.toString().padStart(2, '0')}:00`, LEFT_PAD / 2, y + 5);
         }
 
-        ctx.strokeStyle = (h === gridStartHour || h === gridEndHour) ? gridLineColor : hourLineColor;
+        // Horizontal line
+        ctx.strokeStyle = (h === gridStartHour || h === gridEndHour) ? GRID_LINE : HOUR_LINE;
         ctx.lineWidth   = (h === gridStartHour || h === gridEndHour) ? 2 : 1;
         ctx.beginPath();
         ctx.moveTo(LEFT_PAD, y);
@@ -380,9 +420,9 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
         // Half-hour dashed line
         if (h < gridEndHour) {
           const yHalf = y + rowH / 2;
-          ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
-          ctx.lineWidth = 1;
-          ctx.setLineDash([6, 6]);
+          ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(112,96,171,0.08)';
+          ctx.lineWidth   = 1;
+          ctx.setLineDash([5, 5]);
           ctx.beginPath();
           ctx.moveTo(LEFT_PAD, yHalf);
           ctx.lineTo(LEFT_PAD + gridW, yHalf);
@@ -391,18 +431,18 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
         }
       }
 
-      // Vertical day separator lines inside grid
+      // Vertical column separators
       for (let i = 1; i < 7; i++) {
         const x = LEFT_PAD + i * colW;
-        ctx.strokeStyle = gridLineColor;
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = GRID_LINE;
+        ctx.lineWidth   = 1;
         ctx.beginPath();
         ctx.moveTo(x, GRID_Y);
         ctx.lineTo(x, GRID_Y + GRID_H);
         ctx.stroke();
       }
 
-      // ── F. Class cards ────────────────────────────────────────────────
+      // ── G. Class cards ───────────────────────────────────────────────
       classes.forEach(c => {
         const dayIndex = c.day - 1;
         if (dayIndex < 0 || dayIndex > 6) return;
@@ -414,67 +454,89 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
           const cardY      = GRID_Y + (startDec - gridStartHour) * rowH;
           const cardEndY   = GRID_Y + (endDec   - gridStartHour) * rowH;
           const cardHeight = cardEndY - cardY;
-          const padX  = 8;
-          const cardX = LEFT_PAD + dayIndex * colW + padX;
-          const cardW = colW - padX * 2;
+          const padX       = 6;
+          const cardX      = LEFT_PAD + dayIndex * colW + padX;
+          const cardW      = colW - padX * 2;
+          const radius     = 8;
 
+          // Card fill
           ctx.fillStyle = c.color;
           ctx.beginPath();
-          if (ctx.roundRect) ctx.roundRect(cardX, cardY + 2, cardW, cardHeight - 4, 10);
+          if (ctx.roundRect) ctx.roundRect(cardX, cardY + 2, cardW, cardHeight - 4, radius);
           else ctx.rect(cardX, cardY + 2, cardW, cardHeight - 4);
           ctx.fill();
 
-          // Dark left bar accent
-          ctx.fillStyle = 'rgba(0,0,0,0.22)';
+          // Subtle inner shadow overlay on top
+          const topGrad = ctx.createLinearGradient(0, cardY + 2, 0, cardY + 2 + Math.min(cardHeight * 0.5, 30));
+          topGrad.addColorStop(0, 'rgba(255,255,255,0.18)');
+          topGrad.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.fillStyle = topGrad;
           ctx.beginPath();
-          if (ctx.roundRect) ctx.roundRect(cardX, cardY + 2, 6, cardHeight - 4, [10, 0, 0, 10]);
-          else ctx.fillRect(cardX, cardY + 2, 6, cardHeight - 4);
+          if (ctx.roundRect) ctx.roundRect(cardX, cardY + 2, cardW, cardHeight - 4, radius);
+          else ctx.rect(cardX, cardY + 2, cardW, cardHeight - 4);
           ctx.fill();
 
+          // Left accent bar (darker shade)
+          ctx.fillStyle = 'rgba(0,0,0,0.25)';
+          ctx.beginPath();
+          if (ctx.roundRect) ctx.roundRect(cardX, cardY + 2, 5, cardHeight - 4, [radius, 0, 0, radius]);
+          else ctx.fillRect(cardX, cardY + 2, 5, cardHeight - 4);
+          ctx.fill();
+
+          // Clip text inside card
           ctx.save();
           ctx.beginPath();
-          if (ctx.roundRect) ctx.roundRect(cardX, cardY + 2, cardW, cardHeight - 4, 10);
+          if (ctx.roundRect) ctx.roundRect(cardX, cardY + 2, cardW, cardHeight - 4, radius);
           else ctx.rect(cardX, cardY + 2, cardW, cardHeight - 4);
           ctx.clip();
 
-          ctx.textAlign = 'left';
+          ctx.textAlign    = 'left';
           ctx.textBaseline = 'top';
-          const titleX = cardX + 16;
+          const tX = cardX + 14;
 
           ctx.fillStyle = c.textColor || '#ffffff';
-          ctx.font = "bold 15px 'Inter', system-ui, -apple-system, sans-serif";
-          ctx.fillText(c.title, titleX, cardY + 10);
+          ctx.font      = `bold 14px 'Inter', system-ui, sans-serif`;
+          ctx.fillText(c.title, tX, cardY + 10);
 
-          ctx.font = "500 12px 'Inter', system-ui, -apple-system, sans-serif";
-          ctx.fillStyle = c.textColor === '#ffffff' ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.7)';
-          ctx.fillText(`${c.startTime} - ${c.endTime} hs`, titleX, cardY + 30);
+          ctx.font      = `500 11px 'Inter', system-ui, sans-serif`;
+          ctx.fillStyle = c.textColor === '#ffffff' ? 'rgba(255,255,255,0.82)' : 'rgba(0,0,0,0.65)';
+          ctx.fillText(`${c.startTime} – ${c.endTime} hs`, tX, cardY + 28);
 
-          if (c.coach && cardHeight > 65) {
-            ctx.font = "italic 11px 'Inter', system-ui, -apple-system, sans-serif";
-            ctx.fillStyle = c.textColor === '#ffffff' ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.6)';
-            ctx.fillText(`Prof: ${c.coach}`, titleX, cardY + 50);
+          if (c.coach && cardHeight > 60) {
+            ctx.font      = `italic 11px 'Inter', system-ui, sans-serif`;
+            ctx.fillStyle = c.textColor === '#ffffff' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.55)';
+            ctx.fillText(`Prof. ${c.coach}`, tX, cardY + 46);
           }
 
           ctx.restore();
         }
       });
 
-      // ── G. Footer ─────────────────────────────────────────────────────
-      ctx.textAlign = 'center';
+      // ── H. Footer ────────────────────────────────────────────────────
+      // Thin top rule
+      ctx.strokeStyle = isDark ? '#2d2540' : '#e8e4f3';
+      ctx.lineWidth   = 1;
+      ctx.beginPath();
+      ctx.moveTo(LEFT_PAD, FOOTER_Y - 16);
+      ctx.lineTo(LEFT_PAD + gridW, FOOTER_Y - 16);
+      ctx.stroke();
+
+      ctx.textAlign    = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = textColorMuted;
-      ctx.font = "600 14px 'Inter', system-ui, -apple-system, sans-serif";
+      ctx.fillStyle    = FOOT_COLOR;
+      ctx.font         = `600 13px 'Inter', system-ui, sans-serif`;
       ctx.fillText(footerText.toUpperCase(), W / 2, FOOTER_Y);
 
-      // ── H. Download ───────────────────────────────────────────────────
-      const imageUri = canvas.toDataURL('image/jpeg', 0.95);
+      // ── I. Download ──────────────────────────────────────────────────
+      const imageUri    = canvas.toDataURL('image/jpeg', 0.96);
       const downloadLink = document.createElement('a');
-      downloadLink.href = imageUri;
+      downloadLink.href     = imageUri;
       downloadLink.download = `cronograma_semanal_cadba_${theme}.jpg`;
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
     };
+
 
     // Load logo with async callbacks
     logoImg.onload = () => {
