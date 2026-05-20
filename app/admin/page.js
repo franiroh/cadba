@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { updateContent, uploadImage } from '@/app/actions';
 import styles from './page.module.css';
-import { Save, Image as ImageIcon, Layout, ArrowLeft, Home, BookOpen, Mail, Upload, Loader2, CheckCircle, Shield } from 'lucide-react';
+import { Save, Image as ImageIcon, Layout, ArrowLeft, Home, BookOpen, Mail, Upload, Loader2, CheckCircle, Shield, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import WeeklyCalendar from '@/components/WeeklyCalendar';
 
 const DaysSelector = ({ item, handleSave }) => {
   const days = [
@@ -298,6 +299,7 @@ export default function Admin() {
   if (loading) return <div className={styles.loading}><Loader2 className={styles.spin} /> Cargando panel...</div>;
 
   const filteredContent = content.filter(item => item.page === activePage);
+  const scheduleItem = content.find(item => item.page === 'admin' && item.section === 'calendar' && item.key === 'weekly_schedule');
   
   // Sort sections according to sectionOrder
   const sections = [...new Set(filteredContent.map(item => item.section))]
@@ -344,6 +346,12 @@ export default function Admin() {
             <BookOpen size={18} /> Clases
           </button>
           <button 
+            className={`${styles.navLink} ${activePage === 'calendar' ? styles.activeNavLink : ''}`}
+            onClick={() => setActivePage('calendar')}
+          >
+            <Calendar size={18} /> Calendario Semanal
+          </button>
+          <button 
             className={`${styles.navLink} ${activePage === 'contacto' ? styles.activeNavLink : ''}`}
             onClick={() => setActivePage('contacto')}
           >
@@ -367,13 +375,23 @@ export default function Admin() {
           <h1 className={styles.title}>
             {activePage === 'home' ? 'Editando: Página de Inicio' : 
              activePage === 'clases' ? 'Editando: Página de Clases' : 
-             activePage === 'contacto' ? 'Editando: Página de Contacto' : 'Marketing & Tracking'}
+             activePage === 'contacto' ? 'Editando: Página de Contacto' : 
+             activePage === 'calendar' ? 'Herramienta: Calendario Semanal' : 'Marketing & Tracking'}
           </h1>
           <div className={styles.status}>Base de Datos: Online</div>
         </header>
 
         <main className={styles.content}>
-          {sections.length > 0 ? (
+          {activePage === 'calendar' ? (
+            scheduleItem ? (
+              <WeeklyCalendar scheduleItem={scheduleItem} handleSave={handleSave} />
+            ) : (
+              <div className={styles.empty}>
+                <Loader2 className={styles.spin} size={48} />
+                <p>Cargando datos del calendario...</p>
+              </div>
+            )
+          ) : sections.length > 0 ? (
             sections.map(section => (
               <section key={section} className={styles.pageSection}>
                 <div className={styles.sectionHeader}>
