@@ -408,7 +408,6 @@ export default function Admin() {
                         <li>Entrá a <a href="https://web3forms.com" target="_blank" rel="noopener noreferrer">web3forms.com</a> e ingresá el <strong>nuevo email</strong> de destino.</li>
                         <li>Confirmá el email desde la casilla de correo que recibís.</li>
                         <li>Copiá el nuevo <strong>Access Key</strong> que te dan y pegalo en el campo <em>"Web3Forms Access Key"</em> de abajo.</li>
-                        <li>Actualizá también el campo <em>"Email de Recepción"</em> si querés que figure en la página pública.</li>
                       </ol>
                     </div>
                   )}
