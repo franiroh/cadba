@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { updateContent, uploadImage } from '@/app/actions';
 import styles from './page.module.css';
-import { Save, Image as ImageIcon, Layout, ArrowLeft, Home, BookOpen, Mail, Upload, Loader2, CheckCircle, Shield, Calendar } from 'lucide-react';
+import { Save, Image as ImageIcon, Layout, ArrowLeft, Home, BookOpen, Mail, Upload, Loader2, CheckCircle, Shield, Calendar, Inbox, User, AtSign, Clock } from 'lucide-react';
 import Link from 'next/link';
 import WeeklyCalendar from '@/components/WeeklyCalendar';
 
@@ -57,10 +57,19 @@ export default function Admin() {
   const [activePage, setActivePage] = useState('home');
   const [saving, setSaving] = useState(null); // id of item being saved
   const [uploading, setUploading] = useState(null); // id of item being uploaded
+  const [messages, setMessages] = useState([]);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [expandedMsg, setExpandedMsg] = useState(null);
 
   useEffect(() => {
     fetchContent();
   }, []);
+
+  useEffect(() => {
+    if (activePage === 'mensajes' && messages.length === 0) {
+      fetchMessages();
+    }
+  }, [activePage]);
 
   async function fetchContent() {
     const { data, error } = await supabase
@@ -72,6 +81,17 @@ export default function Admin() {
     if (error) console.error(error);
     else setContent(data);
     setLoading(false);
+  }
+
+  async function fetchMessages() {
+    setLoadingMessages(true);
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) console.error(error);
+    else setMessages(data);
+    setLoadingMessages(false);
   }
 
   async function handleSave(id, value) {
@@ -364,6 +384,13 @@ export default function Admin() {
           >
             <Shield size={18} /> Marketing & Tracking
           </button>
+          <div className={styles.navGroupLabel} style={{marginTop: '16px'}}>Datos</div>
+          <button 
+            className={`${styles.navLink} ${activePage === 'mensajes' ? styles.activeNavLink : ''}`}
+            onClick={() => setActivePage('mensajes')}
+          >
+            <Inbox size={18} /> Mensajes recibidos
+          </button>
         </nav>
 
         <div className={styles.sidebarFooter}>
@@ -377,13 +404,60 @@ export default function Admin() {
             {activePage === 'home' ? 'Editando: Página de Inicio' : 
              activePage === 'clases' ? 'Editando: Página de Clases' : 
              activePage === 'contacto' ? 'Editando: Página de Contacto' : 
-             activePage === 'calendar' ? 'Herramienta: Calendario Semanal' : 'Marketing & Tracking'}
+             activePage === 'calendar' ? 'Herramienta: Calendario Semanal' : 
+             activePage === 'mensajes' ? 'Mensajes de Contacto' : 'Marketing & Tracking'}
           </h1>
           <div className={styles.status}>Base de Datos: Online</div>
         </header>
 
         <main className={styles.content}>
-          {activePage === 'calendar' ? (
+          {activePage === 'mensajes' ? (
+            <div className={styles.messagesView}>
+              {loadingMessages ? (
+                <div className={styles.empty}><Loader2 className={styles.spin} size={48} /><p>Cargando mensajes...</p></div>
+              ) : messages.length === 0 ? (
+                <div className={styles.empty}><Inbox size={48} /><p>No hay mensajes recibidos todavía.</p></div>
+              ) : (
+                <>
+                  <p className={styles.msgCount}>{messages.length} mensaje{messages.length !== 1 ? 's' : ''} recibido{messages.length !== 1 ? 's' : ''}</p>
+                  <div className={styles.msgList}>
+                    {messages.map(msg => {
+                      const date = new Date(msg.created_at);
+                      const dateStr = date.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                      const timeStr = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+                      const isExpanded = expandedMsg === msg.id;
+                      return (
+                        <div
+                          key={msg.id}
+                          className={`${styles.msgCard} ${isExpanded ? styles.msgCardExpanded : ''}`}
+                          onClick={() => setExpandedMsg(isExpanded ? null : msg.id)}
+                        >
+                          <div className={styles.msgHeader}>
+                            <div className={styles.msgMeta}>
+                              <span className={styles.msgName}><User size={14} /> {msg.name}</span>
+                              <span className={styles.msgEmail}><AtSign size={13} /> {msg.email}</span>
+                            </div>
+                            <div className={styles.msgRight}>
+                              <span className={styles.msgSource}>{msg.source === 'Nuevo mensaje de contacto rápido (Portada web)' ? 'Hero' : 'Contacto'}</span>
+                              <span className={styles.msgDate}><Clock size={13} /> {dateStr} {timeStr}</span>
+                            </div>
+                          </div>
+                          {isExpanded && (
+                            <div className={styles.msgBody}>
+                              <p>{msg.message}</p>
+                            </div>
+                          )}
+                          {!isExpanded && (
+                            <p className={styles.msgPreview}>{msg.message}</p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+          ) : activePage === 'calendar' ? (
             scheduleItem ? (
               <WeeklyCalendar scheduleItem={scheduleItem} handleSave={handleSave} />
             ) : (
