@@ -60,6 +60,7 @@ export default function Admin() {
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [expandedMsg, setExpandedMsg] = useState(null);
+  const [messagesError, setMessagesError] = useState(null);
 
   useEffect(() => {
     fetchContent();
@@ -85,12 +86,17 @@ export default function Admin() {
 
   async function fetchMessages() {
     setLoadingMessages(true);
+    setMessagesError(null);
     const { data, error } = await supabase
       .from('contact_messages')
       .select('*')
       .order('created_at', { ascending: false });
-    if (error) console.error(error);
-    else setMessages(data);
+    if (error) {
+      console.error(error);
+      setMessagesError(error.message);
+    } else {
+      setMessages(data);
+    }
     setLoadingMessages(false);
   }
 
@@ -415,6 +421,12 @@ export default function Admin() {
             <div className={styles.messagesView}>
               {loadingMessages ? (
                 <div className={styles.empty}><Loader2 className={styles.spin} size={48} /><p>Cargando mensajes...</p></div>
+              ) : messagesError ? (
+                <div className={styles.empty} style={{color: '#ef4444'}}>
+                  <p>❌ Error al cargar mensajes:</p>
+                  <code style={{fontSize: '0.8rem', background: '#fee2e2', padding: '8px 12px', borderRadius: '6px', color: '#b91c1c'}}>{messagesError}</code>
+                  <button onClick={fetchMessages} style={{marginTop: '8px', padding: '8px 16px', borderRadius: '6px', border: '1px solid #ef4444', background: 'none', color: '#ef4444', cursor: 'pointer', fontWeight: 600}}>Reintentar</button>
+                </div>
               ) : messages.length === 0 ? (
                 <div className={styles.empty}><Inbox size={48} /><p>No hay mensajes recibidos todavía.</p></div>
               ) : (
