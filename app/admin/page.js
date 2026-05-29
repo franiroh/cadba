@@ -373,12 +373,6 @@ export default function Admin() {
             <BookOpen size={18} /> Clases
           </button>
           <button 
-            className={`${styles.navLink} ${activePage === 'calendar' ? styles.activeNavLink : ''}`}
-            onClick={() => setActivePage('calendar')}
-          >
-            <Calendar size={18} /> Calendario Semanal
-          </button>
-          <button 
             className={`${styles.navLink} ${activePage === 'contacto' ? styles.activeNavLink : ''}`}
             onClick={() => setActivePage('contacto')}
           >
@@ -390,7 +384,13 @@ export default function Admin() {
           >
             <Shield size={18} /> Marketing & Tracking
           </button>
-          <div className={styles.navGroupLabel} style={{marginTop: '16px'}}>Datos</div>
+          <div className={styles.navGroupLabel} style={{marginTop: '16px'}}>Herramientas</div>
+          <button 
+            className={`${styles.navLink} ${activePage === 'calendar' ? styles.activeNavLink : ''}`}
+            onClick={() => setActivePage('calendar')}
+          >
+            <Calendar size={18} /> Calendario Semanal
+          </button>
           <button 
             className={`${styles.navLink} ${activePage === 'mensajes' ? styles.activeNavLink : ''}`}
             onClick={() => setActivePage('mensajes')}
