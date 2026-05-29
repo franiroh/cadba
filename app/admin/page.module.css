@@ -396,3 +396,65 @@
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 4px rgba(112, 96, 171, 0.1);
 }
+
+.sectionInfoBox {
+  background-color: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  padding: 16px 20px;
+  font-size: 0.875rem;
+  color: #1e40af;
+  line-height: 1.6;
+}
+
+.sectionInfoBox strong {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #1d4ed8;
+}
+
+.sectionInfoBox ol {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sectionInfoBox a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.sectionInfoBox a:hover {
+  color: #1d4ed8;
+}
+
+.saved {
+  color: #10b981;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 400px;
+  color: #94a3b8;
+  font-weight: 500;
+}
