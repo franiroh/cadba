@@ -248,6 +248,7 @@ export default function Admin() {
     
     // Configuración General (Dentro de Contacto)
     'contacto/general/contact_email': 'Email de Recepción de Formularios',
+    'contacto/general/web3forms_key': 'Web3Forms Access Key (Envío de emails)',
     
     // Navbar
     'navbar/btn_text': 'Botón Menú (Texto)',
@@ -293,7 +294,7 @@ export default function Admin() {
     'primary_btn', 'primary_url', 'secondary_btn', 'secondary_url', 
     'text', 'details', 'btn_text', 'btn_url', 'conversion_scripts',
     'active_days', 'active_hours_start', 'active_hours_end',
-    'contact_email', 'site_title', 'site_description', 'favicon', 'ga_id', 'gtm_id', 'google_ads_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
+    'contact_email', 'web3forms_key', 'site_title', 'site_description', 'favicon', 'ga_id', 'gtm_id', 'google_ads_id', 'meta_pixel_id', 'head_scripts', 'body_scripts'
   ];
 
   if (loading) return <div className={styles.loading}><Loader2 className={styles.spin} /> Cargando panel...</div>;

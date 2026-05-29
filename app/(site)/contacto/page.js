@@ -29,7 +29,7 @@ export default async function Contacto() {
         </div>
 
         <div className={styles.formCol}>
-          <ContactForm destinationEmail={content.general?.contact_email} />
+          <ContactForm destinationEmail={content.general?.contact_email} web3formsKey={content.general?.web3forms_key} />
         </div>
       </section>
     </div>

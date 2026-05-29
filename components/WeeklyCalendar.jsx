@@ -508,15 +508,15 @@ export default function WeeklyCalendar({ scheduleItem, handleSave }) {
           const tX = cardX + 14;
 
           ctx.fillStyle = c.textColor || '#ffffff';
-          ctx.font      = `bold 14px 'Inter', system-ui, sans-serif`;
+          ctx.font = "bold 18px 'Inter', system-ui, -apple-system, sans-serif";
           ctx.fillText(c.title, tX, cardY + 10);
 
-          ctx.font      = `500 11px 'Inter', system-ui, sans-serif`;
+          ctx.font = "500 14px 'Inter', system-ui, -apple-system, sans-serif";
           ctx.fillStyle = c.textColor === '#ffffff' ? 'rgba(255,255,255,0.82)' : 'rgba(0,0,0,0.65)';
           ctx.fillText(`${c.startTime} – ${c.endTime} hs`, tX, cardY + 28);
 
           if (c.coach && cardHeight > 60) {
-            ctx.font      = `italic 11px 'Inter', system-ui, sans-serif`;
+            ctx.font = "italic 13px 'Inter', system-ui, -apple-system, sans-serif";
             ctx.fillStyle = c.textColor === '#ffffff' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.55)';
             ctx.fillText(`Prof. ${c.coach}`, tX, cardY + 46);
           }

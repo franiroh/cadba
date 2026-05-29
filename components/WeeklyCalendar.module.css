@@ -454,6 +454,7 @@
 }
 
 .classTitle {
+  font-size: 0.82rem;
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 1px;
@@ -463,16 +464,16 @@
 }
 
 .classTime {
-  font-weight: 500;
+  font-weight: 600;
   opacity: 0.9;
-  font-size: 0.62rem;
+  font-size: 0.74rem;
   display: flex;
   align-items: center;
   gap: 3px;
 }
 
 .classCoach {
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   font-style: italic;
   opacity: 0.82;
   white-space: nowrap;

@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { sendContactEmail } from '@/app/actions';
 import styles from './page.module.css';
 
-export default function ContactForm({ destinationEmail }) {
+export default function ContactForm({ destinationEmail, web3formsKey }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const email = destinationEmail || 'tu-email@ejemplo.com';
+  const accessKey = web3formsKey || process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ export default function ContactForm({ destinationEmail }) {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: "632e8ec5-a7bb-4d5e-8e48-8cb662ce525f",
+          access_key: accessKey,
           name: e.target.name.value,
           email: e.target.email.value,
           message: e.target.message.value,

@@ -49,6 +49,7 @@ export default async function Home() {
             </div>
             <HeroForm 
               destinationEmail={contactContent.general?.contact_email} 
+              web3formsKey={contactContent.general?.web3forms_key}
               submitText={content.hero?.form_submit}
               styles={styles} 
             />
