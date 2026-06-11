@@ -1,4 +1,3 @@
-import { unstable_cache } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
 
 async function fetchSiteContent(page) {
@@ -22,12 +21,5 @@ async function fetchSiteContent(page) {
 }
 
 export function getSiteContent(page) {
-  return unstable_cache(
-    () => fetchSiteContent(page),
-    [`cms-${page}`],
-    {
-      revalidate: 300,        // refresca cada 5 minutos como máximo
-      tags: [`cms-${page}`],  // permite revalidatePath/revalidateTag preciso
-    }
-  )();
+  return fetchSiteContent(page);
 }
