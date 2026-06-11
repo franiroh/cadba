@@ -4,8 +4,6 @@ import { getSiteContent } from '@/utils/cms.js';
 import HeroForm from '@/components/HeroForm';
 import styles from './page.module.css';
 
-export const dynamic = 'force-dynamic';
-
 export default async function Home() {
   const content = await getSiteContent('home');
   const contactContent = await getSiteContent('contacto');
