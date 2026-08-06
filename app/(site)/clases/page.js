@@ -2,6 +2,8 @@ import { Calendar, MessageSquare } from 'lucide-react';
 import { getSiteContent } from '@/utils/cms';
 import styles from './page.module.css';
 
+export const revalidate = 86400;
+
 export default async function Clases() {
   const content = await getSiteContent('clases');
 

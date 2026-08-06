@@ -2,7 +2,7 @@ import { getSiteContent } from '@/utils/cms';
 import ContactForm from './ContactForm';
 import styles from './page.module.css';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 86400;
 
 export default async function Contacto() {
   const content = await getSiteContent('contacto');

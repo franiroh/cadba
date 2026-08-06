@@ -4,6 +4,11 @@ import { getSiteContent } from '@/utils/cms.js';
 import HeroForm from '@/components/HeroForm';
 import styles from './page.module.css';
 
+// Regenerar la página en el servidor cada 24 horas.
+// El contenido del CMS cambia raramente, así que esto reduce las queries
+// a Supabase de una por visita a una por día.
+export const revalidate = 86400;
+
 export default async function Home() {
   const content = await getSiteContent('home');
   const contactContent = await getSiteContent('contacto');
