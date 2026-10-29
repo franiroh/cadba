@@ -7,12 +7,10 @@ export async function proxy(request) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
+     * Only run Supabase Auth session refresh on /admin routes.
+     * Public pages (/, /clases, /contacto, /gracias) do not use user sessions,
+     * avoiding unnecessary Supabase Auth requests on every public pageview.
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/admin/:path*',
   ],
 }

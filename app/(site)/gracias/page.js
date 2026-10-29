@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { getSiteContent } from "@/utils/cms";
 import styles from './page.module.css';
 
+export const revalidate = 86400;
+
 export default async function Gracias() {
   const content = await getSiteContent('contacto');
   const data = content.gracias || {};

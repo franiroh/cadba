@@ -1,7 +1,8 @@
 "use server";
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
+import { put } from '@vercel/blob';
 
 export async function updateContent(id, newContent) {
   const supabase = await createClient();
@@ -15,36 +16,30 @@ export async function updateContent(id, newContent) {
     return { success: false, error: error.message };
   }
 
+  revalidateTag('site_content', 'max');
   revalidatePath('/');
   revalidatePath('/clases');
+  revalidatePath('/contacto');
+  revalidatePath('/gracias');
   return { success: true };
 }
 
 export async function uploadImage(formData) {
-  const supabase = await createClient();
   const file = formData.get('file');
-  const path = formData.get('path'); // e.g. "home/hero/bg.png"
-  
+  const path = formData.get('path'); // e.g. "home/hero-image-123.png"
+
   const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
 
-  const { data, error } = await supabase.storage
-    .from('site-assets')
-    .upload(path, arrayBuffer, { 
-      upsert: true,
-      contentType: file.type
-    });
+  // Upload to Vercel Blob — served via Vercel's global CDN, zero Supabase egress.
+  const blob = await put(path, buffer, {
+    access: 'public',
+    contentType: file.type,
+    addRandomSuffix: false,
+    allowOverwrite: true,
+  });
 
-  if (error) {
-    console.error('Error uploading image:', error);
-    return { success: false, error: error.message };
-  }
-
-  // Get public URL
-  const { data: { publicUrl } } = supabase.storage
-    .from('site-assets')
-    .getPublicUrl(path);
-
-  return { success: true, url: publicUrl };
+  return { success: true, url: blob.url };
 }
 
 export async function sendContactEmail(formData) {
