@@ -1,7 +1,9 @@
 import Link from 'next/link';
-import { ArrowRight, MapPin, Clock, Phone, Gift, User, Mail, MessageSquare } from 'lucide-react';
+import { ArrowRight, MapPin, Clock, Phone, Gift } from 'lucide-react';
 import { getSiteContent } from '@/utils/cms.js';
+import { obfuscateText } from '@/utils/obfuscate';
 import HeroForm from '@/components/HeroForm';
+import ProtectedText from '@/components/ProtectedText';
 import styles from './page.module.css';
 
 // Regenerar la página en el servidor cada 24 horas.
@@ -12,6 +14,7 @@ export const revalidate = 86400;
 export default async function Home() {
   const content = await getSiteContent('home');
   const contactContent = await getSiteContent('contacto');
+  const encodedPhone = obfuscateText(content.info?.phone);
 
   return (
     <div className={styles.container}>
@@ -51,7 +54,6 @@ export default async function Home() {
               <h3 className={styles.formTitle}>{content.hero?.form_title || 'Consultanos por tu clase'}</h3>
             </div>
             <HeroForm 
-              destinationEmail={contactContent.general?.contact_email} 
               web3formsKey={contactContent.general?.web3forms_key}
               submitText={content.hero?.form_submit}
               styles={styles} 
@@ -206,7 +208,9 @@ export default async function Home() {
               <div className={styles.iItemRow}>
                 <div className={styles.iItemText}>
                   <h3 className={styles.iTitle}>{content.info?.label_phone}</h3>
-                  <p className={styles.iSubtitle}>{content.info?.phone}</p>
+                  <p className={styles.iSubtitle}>
+                    <ProtectedText encoded={encodedPhone} />
+                  </p>
                 </div>
                 <Phone size={28} className={styles.iIcon} strokeWidth={1.5} />
               </div>

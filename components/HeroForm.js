@@ -5,10 +5,9 @@ import { useRouter } from 'next/navigation';
 import { User, Mail, MessageSquare, ArrowRight } from 'lucide-react';
 import { sendContactEmail } from '@/app/actions';
 
-export default function HeroForm({ destinationEmail, web3formsKey, submitText, styles }) {
+export default function HeroForm({ web3formsKey, submitText, styles }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const email = destinationEmail || 'tu-email@ejemplo.com';
   const accessKey = web3formsKey || process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
   const handleSubmit = async (e) => {
@@ -17,8 +16,6 @@ export default function HeroForm({ destinationEmail, web3formsKey, submitText, s
     
     // Honeypot check manual por las dudas
     if (e.target._honey.value) {
-      // Simular éxito para el bot, pero sin enviar el correo ni redirigir a /gracias
-      // Esto evita que las campañas (Google Ads, Meta) lo cuenten como conversión.
       e.target.reset();
       setIsSubmitting(false);
       return;
@@ -26,10 +23,9 @@ export default function HeroForm({ destinationEmail, web3formsKey, submitText, s
 
     try {
       const formData = new FormData(e.target);
-      formData.append('destinationEmail', email);
       formData.append('_subject', "Nuevo mensaje de contacto rápido (Portada web)");
 
-      const result = await sendContactEmail(formData);
+      await sendContactEmail(formData);
       
       // 2. Enviar email vía Web3Forms directo desde el cliente
       const web3Response = await fetch("https://api.web3forms.com/submit", {
@@ -80,7 +76,7 @@ export default function HeroForm({ destinationEmail, web3formsKey, submitText, s
         <MessageSquare size={18} className={styles.inputIcon} />
         <textarea name="message" placeholder="Mensaje" className={styles.inputField} rows={3} required maxLength="1500"></textarea>
       </div>
-    <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+      <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
         {isSubmitting ? 'Enviando...' : (
           <>
             {submitText || 'Enviar consulta'} <ArrowRight size={16} />

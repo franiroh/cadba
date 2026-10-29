@@ -5,10 +5,9 @@ import { useRouter } from 'next/navigation';
 import { sendContactEmail } from '@/app/actions';
 import styles from './page.module.css';
 
-export default function ContactForm({ destinationEmail, web3formsKey }) {
+export default function ContactForm({ web3formsKey }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const email = destinationEmail || 'tu-email@ejemplo.com';
   const accessKey = web3formsKey || process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
   const handleSubmit = async (e) => {
@@ -17,8 +16,6 @@ export default function ContactForm({ destinationEmail, web3formsKey }) {
     
     // Honeypot check manual por las dudas
     if (e.target._honey.value) {
-      // Simular éxito para el bot, pero sin enviar el correo ni redirigir a /gracias
-      // Esto evita que las campañas (Google Ads, Meta) lo cuenten como conversión.
       e.target.reset();
       setIsSubmitting(false);
       return;
@@ -26,10 +23,9 @@ export default function ContactForm({ destinationEmail, web3formsKey }) {
 
     try {
       const formData = new FormData(e.target);
-      formData.append('destinationEmail', email);
       formData.append('_subject', "Nuevo mensaje de contacto web");
 
-      const result = await sendContactEmail(formData);
+      await sendContactEmail(formData);
       
       // 2. Enviar email vía Web3Forms directo desde el cliente
       const web3Response = await fetch("https://api.web3forms.com/submit", {

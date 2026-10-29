@@ -1,4 +1,5 @@
 import { MapPin, Phone } from 'lucide-react';
+import ProtectedText from './ProtectedText';
 import styles from './Footer.module.css';
 
 export default function Footer({ content }) {
@@ -27,7 +28,7 @@ export default function Footer({ content }) {
           <div className={styles.infoBlock}>
             <Phone size={24} className={styles.icon} />
             <div className={styles.textStack}>
-              <span className={styles.textBold}>{content.phone}</span>
+              <ProtectedText encoded={content.encodedPhone} className={styles.textBold} />
               <span className={styles.textNormal}>{content.hours}</span>
             </div>
           </div>
