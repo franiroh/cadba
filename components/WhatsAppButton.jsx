@@ -8,9 +8,13 @@ export default function WhatsAppButton({ content }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const activeDaysStr = content?.active_days || "0,1,2,3,4,5,6";
-    const startTime = content?.active_hours_start || "00:00";
-    const endTime = content?.active_hours_end || "23:59";
+    // Do not render if config/phone is missing or if accessed by an automated headless browser
+    if (!content?.encodedPhone) return;
+    if (typeof navigator !== 'undefined' && navigator.webdriver) return;
+
+    const activeDaysStr = content.active_days || "1,2,3,4,5";
+    const startTime = content.active_hours_start || "10:00";
+    const endTime = content.active_hours_end || "20:00";
     
     try {
       const activeDays = activeDaysStr.split(',').map(d => parseInt(d.trim()));
@@ -41,7 +45,6 @@ export default function WhatsAppButton({ content }) {
       }
     } catch (error) {
       console.error("Error parseando horario de WhatsApp:", error);
-      setIsVisible(true);
     }
   }, [content]);
 
@@ -52,6 +55,7 @@ export default function WhatsAppButton({ content }) {
   const handleOpenWhatsApp = (e) => {
     // Block automated/synthetic clicks from scraper bots
     if (!e.isTrusted) return;
+    if (typeof navigator !== 'undefined' && navigator.webdriver) return;
 
     const rawPhone = deobfuscateText(content?.encodedPhone).replace(/\D/g, '');
     if (!rawPhone) return;
