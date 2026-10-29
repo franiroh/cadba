@@ -2,6 +2,9 @@ import Script from 'next/script';
 import { getSiteContent } from "@/utils/cms";
 import "./globals.css";
 
+const SAFE_TAG_ID_REGEX = /^[A-Za-z0-9_-]+$/;
+const SAFE_PIXEL_ID_REGEX = /^[0-9]+$/;
+
 export async function generateMetadata() {
   const marketing = await getSiteContent('marketing');
   
@@ -16,15 +19,18 @@ export async function generateMetadata() {
 
 export default async function RootLayout({ children }) {
   const marketing = await getSiteContent('marketing');
+  const gaId = SAFE_TAG_ID_REGEX.test(marketing.general?.ga_id || '') ? marketing.general.ga_id : null;
+  const googleAdsId = SAFE_TAG_ID_REGEX.test(marketing.general?.google_ads_id || '') ? marketing.general.google_ads_id : null;
+  const metaPixelId = SAFE_PIXEL_ID_REGEX.test(marketing.general?.meta_pixel_id || '') ? marketing.general.meta_pixel_id : null;
   
   return (
     <html lang="es">
       <head>
         {/* Google Analytics (gtag.js) */}
-        {marketing.general?.ga_id && (
+        {gaId && (
           <>
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${marketing.general.ga_id}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
               strategy="afterInteractive"
             />
             <Script
@@ -35,7 +41,7 @@ export default async function RootLayout({ children }) {
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
-                  gtag('config', '${marketing.general.ga_id}');
+                  gtag('config', '${gaId}');
                 `,
               }}
             />
@@ -43,10 +49,10 @@ export default async function RootLayout({ children }) {
         )}
 
         {/* Google Ads */}
-        {marketing.general?.google_ads_id && (
+        {googleAdsId && (
           <>
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${marketing.general.google_ads_id}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
               strategy="afterInteractive"
             />
             <Script
@@ -57,7 +63,7 @@ export default async function RootLayout({ children }) {
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
-                  gtag('config', '${marketing.general.google_ads_id}');
+                  gtag('config', '${googleAdsId}');
                 `,
               }}
             />
@@ -65,7 +71,7 @@ export default async function RootLayout({ children }) {
         )}
 
         {/* Meta Pixel */}
-        {marketing.general?.meta_pixel_id && (
+        {metaPixelId && (
           <Script
             id="fb-pixel"
             strategy="afterInteractive"
@@ -79,7 +85,7 @@ export default async function RootLayout({ children }) {
                 t.src=v;s=b.getElementsByTagName(e)[0];
                 s.parentNode.insertBefore(t,s)}(window, document,'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '${marketing.general.meta_pixel_id}');
+                fbq('init', '${metaPixelId}');
                 fbq('track', 'PageView');
               `,
             }}
