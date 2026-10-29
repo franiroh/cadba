@@ -8,9 +8,9 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-// unstable_cache persists the result across requests for `revalidate` seconds.
-// This means Supabase is only queried once per day per page, regardless of how
-// many visitors hit the site — dramatically reducing egress usage.
+// unstable_cache persists the result across requests and deployments for `revalidate` seconds.
+// IMPORTANT: Throw on error or empty response inside unstable_cache so Vercel's persistent
+// Data Cache never caches a failed/empty response if Supabase is temporarily unavailable.
 const fetchSiteContent = unstable_cache(
   async (page) => {
     const { data, error } = await supabase
@@ -19,8 +19,11 @@ const fetchSiteContent = unstable_cache(
       .eq('page', page);
 
     if (error) {
-      console.error('Error fetching content:', error);
-      return {};
+      throw new Error(`Error fetching content for ${page}: ${error.message}`);
+    }
+
+    if (!data || data.length === 0) {
+      throw new Error(`Empty site_content returned for page: ${page}`);
     }
 
     // Transform array into nested object: { section: { key: content } }
@@ -30,14 +33,18 @@ const fetchSiteContent = unstable_cache(
       return acc;
     }, {});
   },
-  ['site_content'], // cache key prefix
+  ['site_content_v2'], // bumped cache key to bust any empty {} cached during suspension
   {
     tags: ['site_content'],
     revalidate: 86400, // 24 hours
   }
 );
 
-export function getSiteContent(page) {
-  return fetchSiteContent(page);
+export async function getSiteContent(page) {
+  try {
+    return await fetchSiteContent(page);
+  } catch (err) {
+    console.error('Error in getSiteContent:', err);
+    return {};
+  }
 }
-
