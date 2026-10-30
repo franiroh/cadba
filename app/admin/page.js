@@ -100,32 +100,6 @@ export default function Admin() {
     setLoadingMessages(false);
   }
 
-  function getRelativeTimeInfo(dateInput) {
-    if (!dateInput) return { label: 'Sin fecha', isNew: false, isRecent: false };
-    const now = new Date();
-    const date = new Date(dateInput);
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return { label: 'Recién recibido', isNew: true, isRecent: true };
-    if (diffMins < 60) return { label: `Hace ${diffMins} min`, isNew: true, isRecent: true };
-    if (diffHours < 24) return { label: `Hace ${diffHours} ${diffHours === 1 ? 'hora' : 'horas'}`, isNew: true, isRecent: true };
-    if (diffDays === 1) return { label: 'Ayer', isNew: false, isRecent: true };
-    if (diffDays < 7) return { label: `Hace ${diffDays} días`, isNew: false, isRecent: true };
-    if (diffDays < 30) {
-      const weeks = Math.floor(diffDays / 7);
-      return { label: `Hace ${weeks} ${weeks === 1 ? 'semana' : 'semanas'}`, isNew: false, isRecent: false };
-    }
-    const months = Math.floor(diffDays / 30);
-    if (months < 12) {
-      return { label: `Hace ${months} ${months === 1 ? 'mes' : 'meses'}`, isNew: false, isRecent: false };
-    }
-    const years = Math.floor(diffDays / 365);
-    return { label: `Hace ${years} ${years === 1 ? 'año' : 'años'}`, isNew: false, isRecent: false };
-  }
-
   async function handleSave(id, value) {
     setSaving(id);
     const res = await updateContent(id, value);
@@ -471,7 +445,6 @@ export default function Admin() {
                       const dateStr = date
                         ? date.toLocaleDateString('es-AR', {
                             timeZone: 'America/Argentina/Buenos_Aires',
-                            weekday: 'short',
                             day: '2-digit',
                             month: '2-digit',
                             year: 'numeric',
@@ -485,27 +458,28 @@ export default function Admin() {
                             hour12: false,
                           })
                         : '';
-                      const rel = getRelativeTimeInfo(msg.created_at);
+                      const fullDateTime = date ? `${dateStr} · ${timeStr} hs` : 'Sin fecha';
+                      const isNew = date ? (new Date() - date) < 86400000 : false;
                       const isExpanded = expandedMsg === msg.id;
                       return (
                         <div
                           key={msg.id}
-                          className={`${styles.msgCard} ${rel.isNew ? styles.msgCardNew : ''} ${isExpanded ? styles.msgCardExpanded : ''}`}
+                          className={`${styles.msgCard} ${isNew ? styles.msgCardNew : ''} ${isExpanded ? styles.msgCardExpanded : ''}`}
                           onClick={() => setExpandedMsg(isExpanded ? null : msg.id)}
                         >
                           <div className={styles.msgHeader}>
                             <div className={styles.msgMeta}>
                               <div className={styles.msgNameRow}>
                                 <span className={styles.msgName}><User size={14} /> {msg.name}</span>
-                                <span className={rel.isNew ? styles.badgeNew : rel.isRecent ? styles.badgeRecent : styles.badgeOld}>
-                                  {rel.isNew ? `NUEVO · ${rel.label}` : rel.label}
+                                <span className={isNew ? styles.badgeNew : styles.badgeOld}>
+                                  {isNew ? `NUEVO · ${fullDateTime}` : fullDateTime}
                                 </span>
                               </div>
                               <span className={styles.msgEmail}><AtSign size={13} /> {msg.email}</span>
                             </div>
                             <div className={styles.msgRight}>
                               <span className={styles.msgDate}>
-                                <Clock size={14} /> Recibido: {dateStr}{timeStr ? ` a las ${timeStr} hs` : ''}
+                                <Clock size={14} /> Recibido: {fullDateTime}
                               </span>
                               <span className={styles.msgSource}>
                                 Origen: {msg.source === 'Nuevo mensaje de contacto rápido (Portada web)' ? 'Formulario Portada (Hero)' : 'Página de Contacto'}
