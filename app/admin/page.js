@@ -100,6 +100,32 @@ export default function Admin() {
     setLoadingMessages(false);
   }
 
+  function getRelativeTimeInfo(dateInput) {
+    if (!dateInput) return { label: 'Sin fecha', isNew: false, isRecent: false };
+    const now = new Date();
+    const date = new Date(dateInput);
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return { label: 'Recién recibido', isNew: true, isRecent: true };
+    if (diffMins < 60) return { label: `Hace ${diffMins} min`, isNew: true, isRecent: true };
+    if (diffHours < 24) return { label: `Hace ${diffHours} ${diffHours === 1 ? 'hora' : 'horas'}`, isNew: true, isRecent: true };
+    if (diffDays === 1) return { label: 'Ayer', isNew: false, isRecent: true };
+    if (diffDays < 7) return { label: `Hace ${diffDays} días`, isNew: false, isRecent: true };
+    if (diffDays < 30) {
+      const weeks = Math.floor(diffDays / 7);
+      return { label: `Hace ${weeks} ${weeks === 1 ? 'semana' : 'semanas'}`, isNew: false, isRecent: false };
+    }
+    const months = Math.floor(diffDays / 30);
+    if (months < 12) {
+      return { label: `Hace ${months} ${months === 1 ? 'mes' : 'meses'}`, isNew: false, isRecent: false };
+    }
+    const years = Math.floor(diffDays / 365);
+    return { label: `Hace ${years} ${years === 1 ? 'año' : 'años'}`, isNew: false, isRecent: false };
+  }
+
   async function handleSave(id, value) {
     setSaving(id);
     const res = await updateContent(id, value);
@@ -431,27 +457,59 @@ export default function Admin() {
                 <div className={styles.empty}><Inbox size={48} /><p>No hay mensajes recibidos todavía.</p></div>
               ) : (
                 <>
-                  <p className={styles.msgCount}>{messages.length} mensaje{messages.length !== 1 ? 's' : ''} recibido{messages.length !== 1 ? 's' : ''}</p>
+                  <div className={styles.msgCountBar}>
+                    <p className={styles.msgCount}>
+                      {messages.length} mensaje{messages.length !== 1 ? 's' : ''} recibido{messages.length !== 1 ? 's' : ''} (del más reciente al más antiguo)
+                    </p>
+                    <button onClick={fetchMessages} className={styles.refreshBtn} type="button">
+                      Actualizar lista
+                    </button>
+                  </div>
                   <div className={styles.msgList}>
                     {messages.map(msg => {
-                      const date = new Date(msg.created_at);
-                      const dateStr = date.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                      const timeStr = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+                      const date = msg.created_at ? new Date(msg.created_at) : null;
+                      const dateStr = date
+                        ? date.toLocaleDateString('es-AR', {
+                            timeZone: 'America/Argentina/Buenos_Aires',
+                            weekday: 'short',
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          })
+                        : 'Sin fecha';
+                      const timeStr = date
+                        ? date.toLocaleTimeString('es-AR', {
+                            timeZone: 'America/Argentina/Buenos_Aires',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                          })
+                        : '';
+                      const rel = getRelativeTimeInfo(msg.created_at);
                       const isExpanded = expandedMsg === msg.id;
                       return (
                         <div
                           key={msg.id}
-                          className={`${styles.msgCard} ${isExpanded ? styles.msgCardExpanded : ''}`}
+                          className={`${styles.msgCard} ${rel.isNew ? styles.msgCardNew : ''} ${isExpanded ? styles.msgCardExpanded : ''}`}
                           onClick={() => setExpandedMsg(isExpanded ? null : msg.id)}
                         >
                           <div className={styles.msgHeader}>
                             <div className={styles.msgMeta}>
-                              <span className={styles.msgName}><User size={14} /> {msg.name}</span>
+                              <div className={styles.msgNameRow}>
+                                <span className={styles.msgName}><User size={14} /> {msg.name}</span>
+                                <span className={rel.isNew ? styles.badgeNew : rel.isRecent ? styles.badgeRecent : styles.badgeOld}>
+                                  {rel.isNew ? `NUEVO · ${rel.label}` : rel.label}
+                                </span>
+                              </div>
                               <span className={styles.msgEmail}><AtSign size={13} /> {msg.email}</span>
                             </div>
                             <div className={styles.msgRight}>
-                              <span className={styles.msgSource}>{msg.source === 'Nuevo mensaje de contacto rápido (Portada web)' ? 'Hero' : 'Contacto'}</span>
-                              <span className={styles.msgDate}><Clock size={13} /> {dateStr} {timeStr}</span>
+                              <span className={styles.msgDate}>
+                                <Clock size={14} /> Recibido: {dateStr}{timeStr ? ` a las ${timeStr} hs` : ''}
+                              </span>
+                              <span className={styles.msgSource}>
+                                Origen: {msg.source === 'Nuevo mensaje de contacto rápido (Portada web)' ? 'Formulario Portada (Hero)' : 'Página de Contacto'}
+                              </span>
                             </div>
                           </div>
                           {isExpanded && (
